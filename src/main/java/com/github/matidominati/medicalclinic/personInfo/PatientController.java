@@ -10,7 +10,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/patients")
-
 public class PatientController {
     private final List<Patient> patients;
 
@@ -43,12 +42,12 @@ public class PatientController {
     @DeleteMapping("/{email}")
     public void deletePatient(@PathVariable String email) {
         Optional<Patient> patientToDelete = findPatientByEmail(email);
-        if (patientToDelete.isPresent()) {
-            patients.remove(patientToDelete.get());
-        } else {
+        if (patientToDelete.isEmpty()) {
             throw new RuntimeException("The patient with the given email address does not exist in the database");
         }
+        patients.remove(patientToDelete.get());
     }
+
 
     @PutMapping("/{email}")
     public void updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
