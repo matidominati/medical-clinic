@@ -10,5 +10,5 @@ public interface PatientRepository {
     List<Patient> getAllPatients();
     Patient save(Patient patient);
     Optional<Patient> findPatientByEmail(String email);
-    void deletePatientByEmail (String email);
+    Optional<Patient> deletePatientByEmail (String email);
 }

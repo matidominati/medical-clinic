@@ -30,13 +30,13 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
-    public void deletePatientByEmail(String email) {
+    public Optional<Patient> deletePatientByEmail(String email) {
         Optional<Patient> patientToDelete = findPatientByEmail(email);
         if (patientToDelete.isEmpty()) {
-            throw new IllegalArgumentException("The patient with the given email address does not exist in the database");
+            Optional.empty();
         }
         patients.remove(patientToDelete.get());
+        return patientToDelete;
     }
-
 
 }
