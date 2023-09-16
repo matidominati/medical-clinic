@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.repository;
 
-import com.github.matidominati.medicalclinic.personInfo.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 
 import java.util.List;
 import java.util.Optional;

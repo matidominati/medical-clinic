@@ -20,11 +20,8 @@ public class PatientService {
     }
 
     public Patient getPatient(String email) {
-        Optional<Patient> patient = patientRepository.findPatientByEmail(email);
-        if (patient.isEmpty()) {
-            throw new RuntimeException("Patient with the provided email does not exist");
-        }
-        return patient.get();
+        return patientRepository.findPatientByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient with the provided email does not exist"));
     }
 
     public Patient addPatient(Patient patient) {
@@ -46,30 +43,26 @@ public class PatientService {
 
     public void updatePatient(String email, Patient updatedPatient) {
         patientValidator.checkPatientEditableData(updatedPatient);
-        Optional<Patient> patientOptional = patientRepository.findPatientByEmail(email);
-        if (patientOptional.isEmpty()) {
-            throw new IllegalArgumentException("The patient with the given email address does not exist in the database");
-        }
-        patientOptional.ifPresent(patientToUpdate -> {
-            patientToUpdate.setPassword(updatedPatient.getPassword());
-            patientToUpdate.setFirstName(patientToUpdate.getFirstName());
-            patientToUpdate.setLastName(updatedPatient.getLastName());
-            patientToUpdate.setPhoneNumber(updatedPatient.getPhoneNumber());
-        });
+        Patient patient = patientRepository.findPatientByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient with the provided email does not exist"));
+
+        patient.setPassword(updatedPatient.getPassword());
+        patient.setFirstName(updatedPatient.getFirstName());
+        patient.setLastName(updatedPatient.getLastName());
+        patient.setPhoneNumber(updatedPatient.getPhoneNumber());
         System.out.println("Patient data has been updated.");
     }
 
     public void changePassword(String email, Patient updatedPatient) {
-        Optional<Patient> patientToChangePassword = patientRepository.findPatientByEmail(email);
-        if (patientToChangePassword.isEmpty()) {
-            throw new RuntimeException("Patient with the provided email does not exist");
-        }
-        if (patientToChangePassword.get().getPassword().equals(updatedPatient.getPassword())) {
+
+        Patient patientToChangePassword = patientRepository.findPatientByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Patient with the provided email does not exist"));
+
+        if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
             throw new IllegalArgumentException("New password cannot be the same as the old password");
         }
         patientValidator.checkPatientPassword(updatedPatient);
         System.out.println("Password has been changed.");
     }
-
 
 }
