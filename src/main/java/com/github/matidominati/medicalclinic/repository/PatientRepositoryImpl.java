@@ -17,6 +17,12 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
+    public Patient save(Patient patient) {
+        patients.add(patient);
+        return patient;
+    }
+
+    @Override
     public Optional<Patient> findPatientByEmail(String email) {
         return patients.stream()
                 .filter(patient -> patient.getEmail() != null && patient.getEmail().equals(email))
@@ -31,5 +37,6 @@ public class PatientRepositoryImpl implements PatientRepository {
         }
         patients.remove(patientToDelete.get());
     }
+
 
 }

@@ -11,12 +11,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PatientService {
-    private final List<Patient> patients;
     private final PatientValidator patientValidator;
     private final PatientRepositoryImpl patientRepository;
 
     public List<Patient> getAllPatients() {
-        return patients;
+        return patientRepository.getAllPatients();
     }
 
     public Patient getPatient(String email) {
