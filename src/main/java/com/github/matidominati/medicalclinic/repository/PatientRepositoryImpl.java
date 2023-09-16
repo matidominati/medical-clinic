@@ -17,15 +17,6 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
-    public Patient getPatient(String email) {
-        Optional<Patient> patient = findPatientByEmail(email);
-        if (patient.isEmpty()) {
-            throw new RuntimeException("Patient with the provided email does not exist");
-        }
-        return patient.get();
-    }
-
-    @Override
     public Optional<Patient> findPatientByEmail(String email) {
         return patients.stream()
                 .filter(patient -> patient.getEmail() != null && patient.getEmail().equals(email))
