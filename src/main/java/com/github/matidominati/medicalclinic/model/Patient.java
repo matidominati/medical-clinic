@@ -1,4 +1,4 @@
-package com.github.matidominati.medicalclinic.personInfo;
+package com.github.matidominati.medicalclinic.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
