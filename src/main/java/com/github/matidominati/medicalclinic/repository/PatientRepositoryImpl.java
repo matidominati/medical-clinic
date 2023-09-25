@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.repository;
 
-import com.github.matidominati.medicalclinic.personInfo.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,12 +17,9 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
-    public Patient getPatient(String email) {
-        Optional<Patient> patient = findPatientByEmail(email);
-        if (patient.isEmpty()) {
-            throw new RuntimeException("Patient with the provided email does not exist");
-        }
-        return patient.get();
+    public Patient save(Patient patient) {
+        patients.add(patient);
+        return patient;
     }
 
     @Override
@@ -33,12 +30,13 @@ public class PatientRepositoryImpl implements PatientRepository {
     }
 
     @Override
-    public void deletePatientByEmail(String email) {
+    public Optional<Patient> deletePatientByEmail(String email) {
         Optional<Patient> patientToDelete = findPatientByEmail(email);
         if (patientToDelete.isEmpty()) {
-            throw new IllegalArgumentException("The patient with the given email address does not exist in the database");
+            Optional.empty();
         }
         patients.remove(patientToDelete.get());
+        return patientToDelete;
     }
 
 }
