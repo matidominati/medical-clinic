@@ -1,8 +1,13 @@
 package com.github.matidominati.medicalclinic.service;
 
+import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
+import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
+import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
+import com.github.matidominati.medicalclinic.exception.MedicalException;
 import com.github.matidominati.medicalclinic.model.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepositoryImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +25,14 @@ public class PatientService {
 
     public Patient getPatient(String email) {
         return patientRepository.findPatientByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Patient with the provided email does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
     }
 
     public Patient addPatient(Patient patient) {
         patientValidator.checkPatientData(patient);
         Optional<Patient> optionalPatient = patientRepository.findPatientByEmail(patient.getEmail());
         if(optionalPatient.isPresent()){
-            throw new IllegalArgumentException("Patient with given email exists");
+            throw new DataAlreadyExistsException("Patient with given email exists");
         }
         patientRepository.save(patient);
         return patient;
@@ -36,7 +41,7 @@ public class PatientService {
     public void deletePatient(String email) {
         Optional<Patient> patientToDelete = patientRepository.findPatientByEmail(email);
         if (patientToDelete.isEmpty()) {
-            throw new IllegalArgumentException("The patient with the given email address does not exists in the database");
+            throw new DataNotFoundException("The patient with the given email address does not exists in the database");
         }
         patientRepository.deletePatientByEmail(email);
     }
@@ -44,7 +49,7 @@ public class PatientService {
     public void updatePatient(String email, Patient updatedPatient) {
         patientValidator.checkPatientEditableData(updatedPatient);
         Patient patient = patientRepository.findPatientByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Patient with the provided email does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
         patient.setPassword(updatedPatient.getPassword());
         patient.setFirstName(updatedPatient.getFirstName());
         patient.setLastName(updatedPatient.getLastName());
@@ -54,9 +59,9 @@ public class PatientService {
 
     public void changePassword(String email, Patient updatedPatient) {
         Patient patientToChangePassword = patientRepository.findPatientByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Patient with the provided email does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
         if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
-            throw new IllegalArgumentException("New password cannot be the same as the old password");
+            throw new IncorrectPasswordException("New password cannot be the same as the old password");
         }
         patientValidator.checkPatientPassword(updatedPatient);
         System.out.println("Password has been changed.");
