@@ -1,9 +1,6 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
-import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
-import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
-import com.github.matidominati.medicalclinic.exception.MedicalException;
+import com.github.matidominati.medicalclinic.exception.*;
 import com.github.matidominati.medicalclinic.model.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepositoryImpl;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +44,12 @@ public class PatientService {
     }
 
     public void updatePatient(String email, Patient updatedPatient) {
-        patientValidator.checkPatientEditableData(updatedPatient);
+        patientValidator.checkPatientData(updatedPatient);
         Patient patient = patientRepository.findPatientByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
+        if(!patient.getIdCardNo().equals(updatedPatient.getIdCardNo())){
+            throw new ChangeIdException("Changing ID number is not allowed!");
+        }
         patient.setPassword(updatedPatient.getPassword());
         patient.setFirstName(updatedPatient.getFirstName());
         patient.setLastName(updatedPatient.getLastName());
