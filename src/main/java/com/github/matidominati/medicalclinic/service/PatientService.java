@@ -43,7 +43,7 @@ public class PatientService {
         patientRepository.deletePatientByEmail(email);
     }
 
-    public void updatePatient(String email, Patient updatedPatient) {
+    public Patient updatePatient(String email, Patient updatedPatient) {
         patientValidator.checkPatientData(updatedPatient);
         Patient patient = patientRepository.findPatientByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
@@ -55,6 +55,7 @@ public class PatientService {
         patient.setLastName(updatedPatient.getLastName());
         patient.setPhoneNumber(updatedPatient.getPhoneNumber());
         System.out.println("Patient data has been updated.");
+        return updatedPatient;
     }
 
     public void changePassword(String email, Patient updatedPatient) {
@@ -64,6 +65,7 @@ public class PatientService {
             throw new IncorrectPasswordException("New password cannot be the same as the old password");
         }
         patientValidator.checkPatientPassword(updatedPatient);
+        patientToChangePassword.setPassword(updatedPatient.getPassword());
         System.out.println("Password has been changed.");
     }
 

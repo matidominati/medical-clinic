@@ -30,7 +30,7 @@ public class PatientValidator {
         if (patient.getIdCardNo() == null || patient.getIdCardNo().isEmpty()) {
             throw new ChangeIdException("Card ID number cannot be null");
         }
-        if (patient.getBirthdate() == null || patient.getBirthdate().isAfter(LocalDate.now())) {
+        if (patient.getBirthDate() == null || patient.getBirthDate().isAfter(LocalDate.now())) {
             throw new IncorrectDateException("Birthdate date is incorrect");
         }
     }
@@ -41,7 +41,7 @@ public class PatientValidator {
 
     }
 
-    public void checkPatientPassword(Patient patient) {
+    public boolean checkPatientPassword(Patient patient) {
         if (patient.getPassword() == null || patient.getPassword().isEmpty()) {
             throw new IncorrectPasswordException("Password cannot be null");
         }
@@ -51,6 +51,7 @@ public class PatientValidator {
         if (patient.getPassword().length() < 6) {
             throw new IncorrectPasswordException("Password must consist of more than six characters.");
         }
+        return true;
     }
 
 }
