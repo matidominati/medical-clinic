@@ -16,13 +16,13 @@ import java.time.LocalDate;
 @ExtendWith(MockitoExtension.class)
 public class PatientValidatorTest {
 
-    @Mock
+    @InjectMocks
     PatientValidator patientValidator;
 
     @Test
     void checkPatientEditableData_ValidData() {
         Patient patient1 = new Patient("andrzej.golota@gmail.com", "andrzej1", "123456", "Andrzej",
-                "Golota", "99999999", LocalDate.of(1960, 5, 10));
+                "Golota", "999999999", LocalDate.of(1960, 5, 10));
 
         Assertions.assertDoesNotThrow(() -> patientValidator.checkPatientEditableData(patient1));
     }

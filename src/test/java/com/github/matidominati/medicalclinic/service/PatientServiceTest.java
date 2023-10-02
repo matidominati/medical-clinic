@@ -61,7 +61,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void addNewPatient_PatientDataCorrect_PatientReturned() {
+    void addPatient_PatientDataCorrect_PatientReturned() {
         Patient patient = new Patient("patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
         when(patientRepository.findPatientByEmail(patient.getEmail())).thenReturn(Optional.empty());
