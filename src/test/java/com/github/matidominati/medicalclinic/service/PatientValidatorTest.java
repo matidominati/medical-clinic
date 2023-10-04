@@ -31,7 +31,7 @@ public class PatientValidatorTest {
     }
 
     @Test
-    public void CheckPatientEditableData_NullFirstName() {
+    public void checkPatientEditableData_NullFirstName() {
 
         Patient patient = new Patient("andrzej.golota@gmail.com", "andrzej1", "123456", null,
                 "Golota", "999999999", LocalDate.of(1960, 5, 10));
@@ -41,7 +41,7 @@ public class PatientValidatorTest {
     }
 
     @Test
-    public void CheckPatientEditableData_EmptyFirstName() {
+    public void checkPatientEditableData_EmptyFirstName() {
 
         Patient patient = new Patient("andrzej.golota@gmail.com", "andrzej1", "123456", "",
                 "Golota", "999999999", LocalDate.of(1960, 5, 10));
@@ -51,7 +51,7 @@ public class PatientValidatorTest {
     }
 
     @Test
-    public void CheckPatientEditableData_NullLastName() {
+    public void checkPatientEditableData_NullLastName() {
 
         Patient patient = new Patient("andrzej.golota@gmail.com", "andrzej1", "123456", "Andrzej",
                 null, "999999999", LocalDate.of(1960, 5, 10));
@@ -61,7 +61,7 @@ public class PatientValidatorTest {
     }
 
     @Test
-    public void CheckPatientEditableData_EmptyLastName() {
+    public void checkPatientEditableData_EmptyLastName() {
 
         Patient patient = new Patient("andrzej.golota@gmail.com", "andrzej1", "123456", "Andrzej",
                 "", "999999999", LocalDate.of(1960, 5, 10));
@@ -71,7 +71,7 @@ public class PatientValidatorTest {
     }
 
     @Test
-    public void CheckPatientEditableData_InvalidPhoneNumber() {
+    public void checkPatientEditableData_InvalidPhoneNumber() {
 
         Patient patient = new Patient("andrzej.golota@gmail.com", "andrzej1", "123456", "Andrzej",
                 "Golota", "9", LocalDate.of(1960, 5, 10));
@@ -94,7 +94,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         IncorrectEmailException exception = assertThrows(IncorrectEmailException.class, () -> patientValidator.checkPatientUneditableData(patient));
-        assertEquals("Email cannot be null or empty", exception.getMessage());
+        assertEquals("Incorrect email provided", exception.getMessage());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         IncorrectEmailException exception = assertThrows(IncorrectEmailException.class, () -> patientValidator.checkPatientUneditableData(patient));
-        assertEquals("Email cannot be null or empty", exception.getMessage());
+        assertEquals("Incorrect email provided", exception.getMessage());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         ChangeIdException exception = assertThrows(ChangeIdException.class, () -> patientValidator.checkPatientUneditableData(patient));
-        assertEquals("Card ID number cannot be null or empty", exception.getMessage());
+        assertEquals("Incorrect Card ID number provided", exception.getMessage());
     }
 
     @Test
@@ -121,7 +121,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         ChangeIdException exception = assertThrows(ChangeIdException.class, () -> patientValidator.checkPatientUneditableData(patient));
-        assertEquals("Card ID number cannot be null or empty", exception.getMessage());
+        assertEquals("Incorrect Card ID number provided", exception.getMessage());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", null);
 
         IncorrectDateException exception = assertThrows(IncorrectDateException.class, () -> patientValidator.checkPatientUneditableData(patient));
-        assertEquals("Birth date cannot be null or be later than the current one", exception.getMessage());
+        assertEquals("Incorrect birth date provided", exception.getMessage());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", (LocalDate.now().plusDays(1)));
 
         IncorrectDateException exception = assertThrows(IncorrectDateException.class, () -> patientValidator.checkPatientUneditableData(patient));
-        assertEquals("Birth date cannot be null or be later than the current one", exception.getMessage());
+        assertEquals("Incorrect birth date provided", exception.getMessage());
     }
 
     @Test
@@ -156,7 +156,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
-        assertEquals("Password cannot be null or empty", exception.getMessage());
+        assertEquals("Incorrect password provided", exception.getMessage());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
-        assertEquals("Password cannot be null or empty", exception.getMessage());
+        assertEquals("Incorrect password provided", exception.getMessage());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
-        assertEquals("Password cannot be the same as the first name or last name", exception.getMessage());
+        assertEquals("Incorrect password provided", exception.getMessage());
     }
 
     @Test
@@ -183,7 +183,7 @@ public class PatientValidatorTest {
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
         IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
-        assertEquals("Password cannot be the same as the first name or last name", exception.getMessage());
+        assertEquals("Incorrect password provided", exception.getMessage());
     }
 
     @Test

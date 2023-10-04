@@ -25,13 +25,13 @@ public class PatientValidator {
 
     public void checkPatientUneditableData(Patient patient) {
         if (patient.getEmail() == null || patient.getEmail().isEmpty()) {
-            throw new IncorrectEmailException("Email cannot be null or empty");
+            throw new IncorrectEmailException("Incorrect email provided");
         }
         if (patient.getIdCardNo() == null || patient.getIdCardNo().isEmpty()) {
-            throw new ChangeIdException("Card ID number cannot be null or empty");
+            throw new ChangeIdException("Incorrect Card ID number provided");
         }
         if (patient.getBirthDate() == null || patient.getBirthDate().isAfter(LocalDate.now())) {
-            throw new IncorrectDateException("Birth date cannot be null or be later than the current one");
+            throw new IncorrectDateException("Incorrect birth date provided");
         }
     }
 
@@ -43,10 +43,10 @@ public class PatientValidator {
 
     public boolean checkPatientPassword(Patient patient) {
         if (patient.getPassword() == null || patient.getPassword().isEmpty()) {
-            throw new IncorrectPasswordException("Password cannot be null or empty");
+            throw new IncorrectPasswordException("Incorrect password provided");
         }
         if (patient.getPassword().equals(patient.getFirstName()) || patient.getPassword().equals(patient.getLastName())) {
-            throw new IncorrectPasswordException("Password cannot be the same as the first name or last name");
+            throw new IncorrectPasswordException("Incorrect password provided");
         }
         if (patient.getPassword().length() < 6) {
             throw new IncorrectPasswordException("Password must consist of more than six characters.");
