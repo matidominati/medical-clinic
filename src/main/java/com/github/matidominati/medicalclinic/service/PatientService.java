@@ -58,7 +58,7 @@ public class PatientService {
         return updatedPatient;
     }
 
-    public void changePassword(String email, Patient updatedPatient) {
+    public Patient changePassword(String email, Patient updatedPatient) {
         Patient patientToChangePassword = patientRepository.findPatientByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
         if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
@@ -66,7 +66,7 @@ public class PatientService {
         }
         patientValidator.checkPatientPassword(updatedPatient);
         patientToChangePassword.setPassword(updatedPatient.getPassword());
-        System.out.println("Password has been changed.");
+        return patientToChangePassword;
     }
 
 }

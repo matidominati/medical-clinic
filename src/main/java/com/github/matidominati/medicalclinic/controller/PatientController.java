@@ -34,11 +34,11 @@ public class PatientController {
     }
 
     @PutMapping("/{email}")
-    public void updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        patientService.updatePatient(email, updatedPatient);
+    public Patient updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
+       return patientService.updatePatient(email, updatedPatient);
     }
     @PatchMapping("/{email}")
-    public void changePassword(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        patientService.changePassword(email, updatedPatient);
+    public Patient changePassword(@PathVariable String email, @RequestBody Patient updatedPatient) {
+        return patientService.changePassword(email, updatedPatient);
     }
 }
