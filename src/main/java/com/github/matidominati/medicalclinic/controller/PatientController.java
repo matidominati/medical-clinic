@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.controller;
 
-import com.github.matidominati.medicalclinic.model.Patient;
+import com.github.matidominati.medicalclinic.enity.Patient;
 import com.github.matidominati.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -3,6 +3,7 @@ package com.github.matidominati.medicalclinic.exception;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+
 import java.time.ZonedDateTime;
 
 @Getter

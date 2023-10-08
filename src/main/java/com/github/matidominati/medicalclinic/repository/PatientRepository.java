@@ -1,14 +1,12 @@
 package com.github.matidominati.medicalclinic.repository;
 
-import com.github.matidominati.medicalclinic.model.Patient;
+import com.github.matidominati.medicalclinic.enity.Patient;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
+public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-public interface PatientRepository {
-    List<Patient> getAllPatients();
-    Patient save(Patient patient);
     Optional<Patient> findPatientByEmail(String email);
-    Optional<Patient> deletePatientByEmail (String email);
+
 }

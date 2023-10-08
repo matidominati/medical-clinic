@@ -1,8 +1,8 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.matidominati.medicalclinic.model.Patient;
-import com.github.matidominati.medicalclinic.repository.PatientRepositoryImpl;
+import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +29,11 @@ public class PatientControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private PatientRepositoryImpl patientRepository;
+    private PatientRepository patientRepository;
 
     @BeforeEach
     void setup() {
-        Patient patient1 = new Patient("andrzej.golota@gmail.com", "a1234567", "12345",
+        Patient patient1 = new Patient(1,"andrzej.golota@gmail.com", "a1234567", "12345",
                 "Andrzej", "Golota", "123456890", LocalDate.of(1965, 10, 20));
         Optional<Patient> existingPatient = patientRepository.findPatientByEmail(patient1.getEmail());
         if (existingPatient.isEmpty()) {
@@ -71,7 +71,7 @@ public class PatientControllerTest {
 
     @Test
     void addPatientTest() throws Exception {
-        Patient patient2 = new Patient("agnieszka.dygala@gmail.com", "a1234567", "123456",
+        Patient patient2 = new Patient(1,"agnieszka.dygala@gmail.com", "a1234567", "123456",
                 "Agnieszka", "Dygala", "123456890", LocalDate.of(1965, 10, 20));
 
         mockMvc.perform(post("/patients")
@@ -90,7 +90,7 @@ public class PatientControllerTest {
 
     @Test
     void updatePatientTest() throws Exception {
-        Patient patientUpdated = new Patient("andrzej.golota@gmail.com", "bbb1234567", "12345",
+        Patient patientUpdated = new Patient(1,"andrzej.golota@gmail.com", "bbb1234567", "12345",
                 "Andrzejek", "Golota", "1234500000", LocalDate.of(1965, 10, 20));
 
         mockMvc.perform(put("/patients/{email}", "andrzej.golota@gmail.com")
@@ -106,7 +106,7 @@ public class PatientControllerTest {
 
     @Test
     void changePasswordTest() throws Exception {
-        Patient patientUpdatedPassword = new Patient("andrzej.golota@gmail.com", "a1234567888", "12345",
+        Patient patientUpdatedPassword = new Patient(1,"andrzej.golota@gmail.com", "a1234567888", "12345",
                 "Andrzej", "Golota", "123456890", LocalDate.of(1965, 10, 20));
 
         mockMvc.perform(patch("/patients/{email}", "andrzej.golota@gmail.com")
