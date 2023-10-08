@@ -63,7 +63,6 @@ public class PatientService {
         return updatedPatient;
     }
 
-    @Transactional
     public Patient changePassword(String email, Patient updatedPatient) {
         Patient patientToChangePassword = patientRepository.findPatientByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
