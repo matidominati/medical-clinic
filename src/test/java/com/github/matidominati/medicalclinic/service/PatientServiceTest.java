@@ -116,7 +116,7 @@ public class PatientServiceTest {
 
         patientService.deletePatient(patientToDelete.getEmail());
 
-        verify(patientRepository, times(1)).deletePatientByEmail(patientToDelete.getEmail());
+        verify(patientRepository, times(1)).delete(patientToDelete);
     }
 
     @Test
