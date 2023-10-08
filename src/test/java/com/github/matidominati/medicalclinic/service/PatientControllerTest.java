@@ -35,7 +35,7 @@ public class PatientControllerTest {
     void setup() {
         Patient patient1 = new Patient(1,"andrzej.golota@gmail.com", "a1234567", "12345",
                 "Andrzej", "Golota", "123456890", LocalDate.of(1965, 10, 20));
-        Optional<Patient> existingPatient = patientRepository.findPatientByEmail(patient1.getEmail());
+        Optional<Patient> existingPatient = patientRepository.findByEmail(patient1.getEmail());
         if (existingPatient.isEmpty()) {
             patientRepository.save(patient1);
         }

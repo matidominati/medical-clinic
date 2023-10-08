@@ -53,7 +53,7 @@ public class PatientServiceTest {
         Patient patient = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
+        when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
 
         Patient result = patientService.getPatient("patient.patient@gmail.com");
 
@@ -82,7 +82,7 @@ public class PatientServiceTest {
         Patient patient = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patient.getEmail())).thenReturn(Optional.empty());
+        when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.empty());
 
         Patient result = patientService.addPatient(patient);
 
@@ -101,7 +101,7 @@ public class PatientServiceTest {
         Patient patient = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
+        when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
 
         DataAlreadyExistsException exception = assertThrows(DataAlreadyExistsException.class, () -> patientService.addPatient(patient));
         assertEquals("Patient with given email exists", exception.getMessage());
@@ -112,7 +112,7 @@ public class PatientServiceTest {
         Patient patientToDelete = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToDelete.getEmail())).thenReturn(Optional.of(patientToDelete));
+        when(patientRepository.findByEmail(patientToDelete.getEmail())).thenReturn(Optional.of(patientToDelete));
 
         patientService.deletePatient(patientToDelete.getEmail());
 
@@ -124,7 +124,7 @@ public class PatientServiceTest {
         Patient patientToDelete = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToDelete.getEmail())).thenReturn(Optional.empty());
+        when(patientRepository.findByEmail(patientToDelete.getEmail())).thenReturn(Optional.empty());
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> patientService.deletePatient(patientToDelete.getEmail()));
 
@@ -138,7 +138,7 @@ public class PatientServiceTest {
         Patient patientUpdated = new Patient(1,"patient.patient@gmail.com", "bb", "123", "cc",
                 "dd", "55", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToUpdate.getEmail())).thenReturn(Optional.of(patientToUpdate));
+        when(patientRepository.findByEmail(patientToUpdate.getEmail())).thenReturn(Optional.of(patientToUpdate));
 
         Patient result = patientService.updatePatient(patientToUpdate.getEmail(), patientUpdated);
 
@@ -155,7 +155,7 @@ public class PatientServiceTest {
         Patient patientUpdated = new Patient(1,"patient.patient@gmail.com", "bb", "123", "cc",
                 "dd", "55", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToUpdate.getEmail())).thenReturn(Optional.empty());
+        when(patientRepository.findByEmail(patientToUpdate.getEmail())).thenReturn(Optional.empty());
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> patientService.updatePatient(patientToUpdate.getEmail(), patientUpdated));
 
@@ -169,7 +169,7 @@ public class PatientServiceTest {
         Patient patientUpdated = new Patient(1,"patient.patient@gmail.com", "bb", "1234", "cc",
                 "dd", "55", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToUpdate.getEmail())).thenReturn(Optional.of(patientToUpdate));
+        when(patientRepository.findByEmail(patientToUpdate.getEmail())).thenReturn(Optional.of(patientToUpdate));
 
         ChangeIdException exception = assertThrows(ChangeIdException.class, () -> patientService.updatePatient(patientToUpdate.getEmail(), patientUpdated));
 
@@ -183,7 +183,7 @@ public class PatientServiceTest {
         Patient updatedPatient = new Patient(1,"patient.patient@gmail.com", "patient1", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.of(patientToChangePassword));
+        when(patientRepository.findByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.of(patientToChangePassword));
         when(patientValidator.checkPatientPassword(updatedPatient)).thenReturn(true);
 
         patientService.changePassword(patientToChangePassword.getEmail(), updatedPatient);
@@ -200,7 +200,7 @@ public class PatientServiceTest {
         Patient updatedPatient = new Patient(1,"patient.patient@gmail.com", "patient1", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.empty());
+        when(patientRepository.findByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.empty());
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> patientService.changePassword(patientToChangePassword.getEmail(), updatedPatient));
 
@@ -214,7 +214,7 @@ public class PatientServiceTest {
         Patient updatedPatient = new Patient(1,"patient.patient@gmail.com", "aabcdef", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findPatientByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.of(patientToChangePassword));
+        when(patientRepository.findByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.of(patientToChangePassword));
 
         IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientService.changePassword(patientToChangePassword.getEmail(), updatedPatient));
 
