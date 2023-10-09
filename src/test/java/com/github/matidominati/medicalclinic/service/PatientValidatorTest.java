@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.github.matidominati.medicalclinic.exception.*;
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

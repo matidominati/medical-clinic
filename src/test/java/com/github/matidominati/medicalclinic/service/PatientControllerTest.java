@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,12 +48,11 @@ public class PatientControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$[0].idCardNo").value("12345"))
                 .andExpect(jsonPath("$[0].firstName").value("Andrzej"))
                 .andExpect(jsonPath("$[0].lastName").value("Golota"))
                 .andExpect(jsonPath("$[0].phoneNumber").value("123456890"))
-                .andExpect(jsonPath("$[0].birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())))
-                .andExpect(jsonPath("$[0].password").value("a1234567"));
+                .andExpect(jsonPath("$[0].birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())));
+
     }
 
     @Test
@@ -61,12 +61,10 @@ public class PatientControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$.idCardNo").value("12345"))
                 .andExpect(jsonPath("$.firstName").value("Andrzej"))
                 .andExpect(jsonPath("$.lastName").value("Golota"))
                 .andExpect(jsonPath("$.phoneNumber").value("123456890"))
-                .andExpect(jsonPath("$.birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())))
-                .andExpect(jsonPath("$.password").value("a1234567"));
+                .andExpect(jsonPath("$.birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())));
     }
 
     @Test
@@ -99,7 +97,6 @@ public class PatientControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$.password").value("bbb1234567"))
                 .andExpect(jsonPath("$.firstName").value("Andrzejek"))
                 .andExpect(jsonPath("$.phoneNumber").value("1234500000"));
     }
@@ -114,7 +111,7 @@ public class PatientControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$.password").value("a1234567888"));
+                .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"));
+
     }
 }

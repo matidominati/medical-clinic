@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 import com.github.matidominati.medicalclinic.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

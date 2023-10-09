@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.repository;
 
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

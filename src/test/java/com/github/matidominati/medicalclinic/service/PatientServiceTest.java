@@ -4,7 +4,7 @@ import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
