@@ -1,5 +1,7 @@
 package com.github.matidominati.medicalclinic.service;
 
+import com.github.matidominati.medicalclinic.service.dto.PatientDto;
+import com.github.matidominati.medicalclinic.service.mapper.PatientMapper;
 import com.github.matidominati.medicalclinic.model.Patient;
 import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,24 +22,27 @@ public class PatientService {
     private final PatientValidator patientValidator;
     private final PatientRepository patientRepository;
 
-    public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+    public List<PatientDto> getAllPatients() {
+        return patientRepository.findAll().stream()
+                .map(patient -> PatientMapper.mapToDto(patient))
+                .collect(Collectors.toList());
     }
 
-    public Patient getPatient(String email) {
-        return patientRepository.findByEmail(email)
+    public PatientDto getPatient(String email) {
+        Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
+        return PatientMapper.mapToDto(patient);
     }
 
     @Transactional
-    public Patient addPatient(Patient patient) {
+    public PatientDto addPatient(Patient patient) {
         patientValidator.checkPatientData(patient);
         Optional<Patient> optionalPatient = patientRepository.findByEmail(patient.getEmail());
         if (optionalPatient.isPresent()) {
             throw new DataAlreadyExistsException("Patient with given email exists");
         }
         patientRepository.save(patient);
-        return patient;
+        return PatientMapper.mapToDto(patient);
     }
 
     @Transactional
@@ -49,7 +55,7 @@ public class PatientService {
     }
 
     @Transactional
-    public Patient updatePatient(String email, Patient updatedPatient) {
+    public PatientDto updatePatient(String email, Patient updatedPatient) {
         patientValidator.checkPatientData(updatedPatient);
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
@@ -60,12 +66,13 @@ public class PatientService {
         patient.setFirstName(updatedPatient.getFirstName());
         patient.setLastName(updatedPatient.getLastName());
         patient.setPhoneNumber(updatedPatient.getPhoneNumber());
+        patientRepository.save(patient);
         System.out.println("Patient data has been updated.");
-        return updatedPatient;
+        return PatientMapper.mapToDto(updatedPatient);
     }
 
     @Transactional
-    public Patient changePassword(String email, Patient updatedPatient) {
+    public PatientDto changePassword(String email, Patient updatedPatient) {
         Patient patientToChangePassword = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
         if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
@@ -73,6 +80,7 @@ public class PatientService {
         }
         patientValidator.checkPatientPassword(updatedPatient);
         patientToChangePassword.setPassword(updatedPatient.getPassword());
-        return patientToChangePassword;
+        patientRepository.save(patientToChangePassword);
+       return PatientMapper.mapToDto(patientToChangePassword);
     }
 }
