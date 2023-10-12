@@ -1,12 +1,12 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.service.dto.PatientDto;
-import com.github.matidominati.medicalclinic.service.mapper.PatientMapper;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.mapper.PatientMapper;
 import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
-import com.github.matidominati.medicalclinic.model.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,8 +61,6 @@ public class PatientServiceTest {
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
         when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
-
-//        PatientDto patientDto = PatientMapper.mapToDto(patient);
 
         PatientDto result = patientService.getPatient("patient.patient@gmail.com");
 
@@ -191,11 +189,11 @@ public class PatientServiceTest {
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
         when(patientRepository.findByEmail(patientOriginal.getEmail())).thenReturn(Optional.of(patientOriginal));
-        when(patientValidator.checkPatientPassword(patientUpdated)).thenReturn(true);
+        when(patientValidator.checkIfPatientPasswordValid(patientUpdated)).thenReturn(true);
 
         patientService.changePassword(patientOriginal.getEmail(), patientUpdated);
 
-        verify(patientValidator, times(1)).checkPatientPassword(patientUpdated);
+        verify(patientValidator, times(1)).checkIfPatientPasswordValid(patientUpdated);
         verify(patientRepository).save(patientUpdated);
     }
 

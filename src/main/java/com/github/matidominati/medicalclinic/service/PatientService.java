@@ -1,8 +1,8 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.service.dto.PatientDto;
-import com.github.matidominati.medicalclinic.service.mapper.PatientMapper;
-import com.github.matidominati.medicalclinic.model.Patient;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.mapper.PatientMapper;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
@@ -78,7 +78,7 @@ public class PatientService {
         if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
             throw new IncorrectPasswordException("New password cannot be the same as the old password");
         }
-        patientValidator.checkPatientPassword(updatedPatient);
+        patientValidator.checkIfPatientPasswordValid(updatedPatient);
         patientToChangePassword.setPassword(updatedPatient.getPassword());
         patientRepository.save(patientToChangePassword);
        return PatientMapper.mapToDto(patientToChangePassword);

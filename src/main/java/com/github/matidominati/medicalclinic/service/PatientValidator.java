@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.model.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class PatientValidator {
         if (patient.getPhoneNumber() == null || patient.getPhoneNumber().isEmpty() || patient.getPhoneNumber().length() < 9) {
             throw new IncorrectPhoneNumberException("Phone number must consist of nine digits");
         }
-        checkPatientPassword(patient);
+        checkIfPatientPasswordValid(patient);
     }
 
     public void checkPatientUneditableData(Patient patient) {
@@ -41,7 +41,7 @@ public class PatientValidator {
 
     }
 
-    public boolean checkPatientPassword(Patient patient) {
+    public boolean checkIfPatientPasswordValid(Patient patient) {
         if (patient.getPassword() == null || patient.getPassword().isEmpty()) {
             throw new IncorrectPasswordException("Incorrect password provided");
         }

@@ -1,8 +1,8 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.model.Patient;
-import com.github.matidominati.medicalclinic.service.dto.PatientDto;
-import com.github.matidominati.medicalclinic.service.mapper.PatientMapper;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.mapper.PatientMapper;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;

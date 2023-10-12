@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.matidominati.medicalclinic.model.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;

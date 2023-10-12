@@ -1,4 +1,4 @@
-package com.github.matidominati.medicalclinic.service.dto;
+package com.github.matidominati.medicalclinic.model.dto;
 import lombok.Data;
 import java.time.LocalDate;
 

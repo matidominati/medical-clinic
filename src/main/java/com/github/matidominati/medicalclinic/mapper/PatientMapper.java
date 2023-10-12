@@ -1,6 +1,6 @@
-package com.github.matidominati.medicalclinic.service.mapper;
-import com.github.matidominati.medicalclinic.service.dto.PatientDto;
-import com.github.matidominati.medicalclinic.model.Patient;
+package com.github.matidominati.medicalclinic.mapper;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

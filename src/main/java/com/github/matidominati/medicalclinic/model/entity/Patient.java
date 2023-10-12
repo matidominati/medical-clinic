@@ -1,4 +1,4 @@
-package com.github.matidominati.medicalclinic.model;
+package com.github.matidominati.medicalclinic.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
