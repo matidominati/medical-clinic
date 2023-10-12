@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +11,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDate;
 import java.util.Optional;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,12 +45,10 @@ public class PatientControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$[0].idCardNo").value("12345"))
                 .andExpect(jsonPath("$[0].firstName").value("Andrzej"))
                 .andExpect(jsonPath("$[0].lastName").value("Golota"))
                 .andExpect(jsonPath("$[0].phoneNumber").value("123456890"))
-                .andExpect(jsonPath("$[0].birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())))
-                .andExpect(jsonPath("$[0].password").value("a1234567"));
+                .andExpect(jsonPath("$[0].birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())));
     }
 
     @Test
@@ -61,12 +57,10 @@ public class PatientControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$.idCardNo").value("12345"))
                 .andExpect(jsonPath("$.firstName").value("Andrzej"))
                 .andExpect(jsonPath("$.lastName").value("Golota"))
                 .andExpect(jsonPath("$.phoneNumber").value("123456890"))
-                .andExpect(jsonPath("$.birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())))
-                .andExpect(jsonPath("$.password").value("a1234567"));
+                .andExpect(jsonPath("$.birthDate", Matchers.is(LocalDate.parse("1965-10-20").toString())));
     }
 
     @Test
@@ -90,18 +84,24 @@ public class PatientControllerTest {
 
     @Test
     void updatePatientTest() throws Exception {
-        Patient patientUpdated = new Patient(1,"andrzej.golota@gmail.com", "bbb1234567", "12345",
-                "Andrzejek", "Golota", "1234500000", LocalDate.of(1965, 10, 20));
+        Patient  patientOriginal = new Patient(1,"lukasz.golota@gmail.com", "bbb1234567", "12345",
+                "Lukasz", "Golota", "1234500000", LocalDate.of(1965, 10, 20));
 
-        mockMvc.perform(put("/patients/{email}", "andrzej.golota@gmail.com")
+        patientRepository.save(patientOriginal);
+
+        Patient patientUpdated = new Patient(1,"lukasz.golota@gmail.com", "bbb1234567", "12345",
+                "Lukaszek", "Golota123", "1234500000123", LocalDate.of(1965, 10, 20));
+
+        mockMvc.perform(put("/patients/{email}", "lukasz.golota@gmail.com")
                         .content(objectMapper.writeValueAsString(patientUpdated))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$.password").value("bbb1234567"))
-                .andExpect(jsonPath("$.firstName").value("Andrzejek"))
-                .andExpect(jsonPath("$.phoneNumber").value("1234500000"));
+                .andExpect(jsonPath("$.email").value("lukasz.golota@gmail.com"))
+                .andExpect(jsonPath("$.firstName").value("Lukaszek"))
+                .andExpect(jsonPath("$.lastName").value("Golota123"))
+                .andExpect(jsonPath("$.phoneNumber").value("1234500000123"))
+                .andExpect(jsonPath("$.birthDate").value("1965-10-20"));
     }
 
     @Test
@@ -114,7 +114,6 @@ public class PatientControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"))
-                .andExpect(jsonPath("$.password").value("a1234567888"));
+                .andExpect(jsonPath("$.email").value("andrzej.golota@gmail.com"));
     }
 }

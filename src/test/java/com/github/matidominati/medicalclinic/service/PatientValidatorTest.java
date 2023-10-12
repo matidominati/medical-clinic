@@ -1,15 +1,13 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.github.matidominati.medicalclinic.exception.*;
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -144,7 +142,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "andrzej1oo", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        Assertions.assertTrue(patientValidator.checkPatientPassword(patient));
+        Assertions.assertTrue(patientValidator.isPatientPasswordValid(patient));
     }
 
     @Test
@@ -152,7 +150,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", null, "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -161,7 +159,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -170,7 +168,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "Andrzej", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -179,7 +177,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "Golota", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -188,7 +186,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "1234", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkPatientPassword(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Password must consist of more than six characters.", exception.getMessage());
     }
 }

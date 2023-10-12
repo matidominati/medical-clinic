@@ -1,24 +1,23 @@
 package com.github.matidominati.medicalclinic.service;
 
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.mapper.PatientMapper;
 import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,9 +42,17 @@ public class PatientServiceTest {
 
         when(patientRepository.findAll()).thenReturn(expectedPatients);
 
-        List<Patient> result = patientService.getAllPatients();
+        PatientDto patientDto1 = PatientMapper.mapToDto(patient1);
+        PatientDto patientDto2 = PatientMapper.mapToDto(patient2);
 
-        assertEquals(expectedPatients, result);
+        List<PatientDto> expectedPatientsDto = new ArrayList<>();
+
+        expectedPatientsDto.add(patientDto1);
+        expectedPatientsDto.add(patientDto2);
+
+        List<PatientDto> result = patientService.getAllPatients();
+
+        assertEquals(expectedPatientsDto, result);
     }
 
     @Test
@@ -55,11 +62,9 @@ public class PatientServiceTest {
 
         when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
 
-        Patient result = patientService.getPatient("patient.patient@gmail.com");
+        PatientDto result = patientService.getPatient("patient.patient@gmail.com");
 
         assertEquals("patient.patient@gmail.com", result.getEmail());
-        assertEquals("aa", result.getPassword());
-        assertEquals("123", result.getIdCardNo());
         assertEquals("bb", result.getFirstName());
         assertEquals("bb", result.getFirstName());
         assertEquals("cc", result.getLastName());
@@ -84,16 +89,15 @@ public class PatientServiceTest {
 
         when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.empty());
 
-        Patient result = patientService.addPatient(patient);
+        PatientDto result = patientService.addPatient(patient);
 
         assertEquals("patient.patient@gmail.com", result.getEmail());
-        assertEquals("aa", result.getPassword());
-        assertEquals("123", result.getIdCardNo());
         assertEquals("bb", result.getFirstName());
         assertEquals("bb", result.getFirstName());
         assertEquals("cc", result.getLastName());
         assertEquals("124", result.getPhoneNumber());
         assertEquals(LocalDate.of(1999, 2, 1), result.getBirthDate());
+        verify(patientRepository).save(patient);
     }
 
     @Test
@@ -133,16 +137,17 @@ public class PatientServiceTest {
 
     @Test
     void updatePatient_PatientDataCorrect_UpdatePatient() {
-        Patient patientToUpdate = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
+        Patient patientOriginal = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
         Patient patientUpdated = new Patient(1,"patient.patient@gmail.com", "bb", "123", "cc",
                 "dd", "55", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findByEmail(patientToUpdate.getEmail())).thenReturn(Optional.of(patientToUpdate));
+        when(patientRepository.findByEmail(patientOriginal.getEmail())).thenReturn(Optional.of(patientOriginal));
 
-        Patient result = patientService.updatePatient(patientToUpdate.getEmail(), patientUpdated);
+        PatientDto result = patientService.updatePatient(patientOriginal.getEmail(), patientUpdated);
 
-        assertEquals("bb", result.getPassword());
+        verify(patientRepository).findByEmail(patientOriginal.getEmail());
+        verify(patientRepository).save(patientUpdated);
         assertEquals("cc", result.getFirstName());
         assertEquals("dd", result.getLastName());
         assertEquals("55", result.getPhoneNumber());
@@ -178,19 +183,18 @@ public class PatientServiceTest {
 
     @Test
     void changePassword_EmailCorrect_PasswordChanged() {
-        Patient patientToChangePassword = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
+        Patient patientOriginal = new Patient(1,"patient.patient@gmail.com", "aa", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
-        Patient updatedPatient = new Patient(1,"patient.patient@gmail.com", "patient1", "123", "bb",
+        Patient patientUpdated = new Patient(1,"patient.patient@gmail.com", "patient1", "123", "bb",
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
-        when(patientRepository.findByEmail(patientToChangePassword.getEmail())).thenReturn(Optional.of(patientToChangePassword));
-        when(patientValidator.checkPatientPassword(updatedPatient)).thenReturn(true);
+        when(patientRepository.findByEmail(patientOriginal.getEmail())).thenReturn(Optional.of(patientOriginal));
+        when(patientValidator.isPatientPasswordValid(patientUpdated)).thenReturn(true);
 
-        patientService.changePassword(patientToChangePassword.getEmail(), updatedPatient);
+        patientService.changePassword(patientOriginal.getEmail(), patientUpdated);
 
-        assertEquals(updatedPatient.getPassword(), patientToChangePassword.getPassword());
-
-        verify(patientValidator, times(1)).checkPatientPassword(updatedPatient);
+        verify(patientValidator, times(1)).isPatientPasswordValid(patientUpdated);
+        verify(patientRepository).save(patientUpdated);
     }
 
     @Test

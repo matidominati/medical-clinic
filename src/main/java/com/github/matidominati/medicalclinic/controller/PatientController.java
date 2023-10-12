@@ -1,10 +1,10 @@
 package com.github.matidominati.medicalclinic.controller;
 
-import com.github.matidominati.medicalclinic.enity.Patient;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -13,18 +13,19 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+
     @GetMapping
-    public List<Patient> getAllPatients() {
+    public List<PatientDto> getAllPatients() {
         return patientService.getAllPatients();
     }
 
     @GetMapping("/{email}")
-    public Patient getPatient(@PathVariable String email) {
+    public PatientDto getPatient(@PathVariable String email) {
         return patientService.getPatient(email);
     }
 
     @PostMapping
-    public Patient addPatient(@RequestBody Patient patient) {
+    public PatientDto addPatient(@RequestBody Patient patient) {
         return patientService.addPatient(patient);
     }
 
@@ -34,11 +35,12 @@ public class PatientController {
     }
 
     @PutMapping("/{email}")
-    public Patient updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
+    public PatientDto updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
        return patientService.updatePatient(email, updatedPatient);
     }
+
     @PatchMapping("/{email}")
-    public Patient changePassword(@PathVariable String email, @RequestBody Patient updatedPatient) {
+    public PatientDto changePassword(@PathVariable String email, @RequestBody Patient updatedPatient) {
         return patientService.changePassword(email, updatedPatient);
     }
 }
