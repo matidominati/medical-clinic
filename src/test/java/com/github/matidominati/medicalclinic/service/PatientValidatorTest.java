@@ -142,7 +142,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "andrzej1oo", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        Assertions.assertTrue(patientValidator.checkIfPatientPasswordValid(patient));
+        Assertions.assertTrue(patientValidator.isPatientPasswordValid(patient));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", null, "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkIfPatientPasswordValid(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -159,7 +159,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkIfPatientPasswordValid(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -168,7 +168,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "Andrzej", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkIfPatientPasswordValid(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -177,7 +177,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "Golota", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkIfPatientPasswordValid(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Incorrect password provided", exception.getMessage());
     }
 
@@ -186,7 +186,7 @@ public class PatientValidatorTest {
         Patient patient = new Patient(1,"andrzej.golota@gmail.com", "1234", "123456", "Andrzej",
                 "Golota", "99999999", LocalDate.of(1960, 5, 10));
 
-        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.checkIfPatientPasswordValid(patient));
+        IncorrectPasswordException exception = assertThrows(IncorrectPasswordException.class, () -> patientValidator.isPatientPasswordValid(patient));
         assertEquals("Password must consist of more than six characters.", exception.getMessage());
     }
 }

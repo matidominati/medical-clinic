@@ -78,7 +78,7 @@ public class PatientService {
         if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
             throw new IncorrectPasswordException("New password cannot be the same as the old password");
         }
-        patientValidator.checkIfPatientPasswordValid(updatedPatient);
+        patientValidator.isPatientPasswordValid(updatedPatient);
         patientToChangePassword.setPassword(updatedPatient.getPassword());
         patientRepository.save(patientToChangePassword);
        return PatientMapper.mapToDto(patientToChangePassword);

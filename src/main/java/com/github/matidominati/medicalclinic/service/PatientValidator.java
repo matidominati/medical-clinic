@@ -20,7 +20,7 @@ public class PatientValidator {
         if (patient.getPhoneNumber() == null || patient.getPhoneNumber().isEmpty() || patient.getPhoneNumber().length() < 9) {
             throw new IncorrectPhoneNumberException("Phone number must consist of nine digits");
         }
-        checkIfPatientPasswordValid(patient);
+        isPatientPasswordValid(patient);
     }
 
     public void checkPatientUneditableData(Patient patient) {
@@ -41,7 +41,7 @@ public class PatientValidator {
 
     }
 
-    public boolean checkIfPatientPasswordValid(Patient patient) {
+    public boolean isPatientPasswordValid(Patient patient) {
         if (patient.getPassword() == null || patient.getPassword().isEmpty()) {
             throw new IncorrectPasswordException("Incorrect password provided");
         }

@@ -189,11 +189,11 @@ public class PatientServiceTest {
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
         when(patientRepository.findByEmail(patientOriginal.getEmail())).thenReturn(Optional.of(patientOriginal));
-        when(patientValidator.checkIfPatientPasswordValid(patientUpdated)).thenReturn(true);
+        when(patientValidator.isPatientPasswordValid(patientUpdated)).thenReturn(true);
 
         patientService.changePassword(patientOriginal.getEmail(), patientUpdated);
 
-        verify(patientValidator, times(1)).checkIfPatientPasswordValid(patientUpdated);
+        verify(patientValidator, times(1)).isPatientPasswordValid(patientUpdated);
         verify(patientRepository).save(patientUpdated);
     }
 
