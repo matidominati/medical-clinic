@@ -1,33 +1,45 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.model.dto.PatientDto;
-import com.github.matidominati.medicalclinic.mapper.PatientMapper;
 import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
+import com.github.matidominati.medicalclinic.mapper.PatientMapper;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 public class PatientServiceTest {
-    @Mock
+
     PatientValidator patientValidator;
-    @Mock
     PatientRepository patientRepository;
-    @InjectMocks
+    PatientMapper patientMapper;
     PatientService patientService;
+
+    @BeforeEach
+    void setup() {
+        this.patientValidator = Mockito.mock(PatientValidator.class);
+        this.patientRepository = Mockito.mock(PatientRepository.class);
+        this.patientMapper = Mappers.getMapper(PatientMapper.class);
+        this.patientService = new PatientService(patientValidator, patientRepository, patientMapper);
+    }
 
     @Test
     void getAllPatients_PatientsExists_PatientsReturned() {
@@ -42,8 +54,8 @@ public class PatientServiceTest {
 
         when(patientRepository.findAll()).thenReturn(expectedPatients);
 
-        PatientDto patientDto1 = PatientMapper.mapToDto(patient1);
-        PatientDto patientDto2 = PatientMapper.mapToDto(patient2);
+        PatientDto patientDto1 = patientMapper.patientToPatientDto(patient1);
+        PatientDto patientDto2 = patientMapper.patientToPatientDto(patient2);
 
         List<PatientDto> expectedPatientsDto = new ArrayList<>();
 
@@ -61,7 +73,6 @@ public class PatientServiceTest {
                 "cc", "124", LocalDate.of(1999, 2, 1));
 
         when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
-
         PatientDto result = patientService.getPatient("patient.patient@gmail.com");
 
         assertEquals("patient.patient@gmail.com", result.getEmail());

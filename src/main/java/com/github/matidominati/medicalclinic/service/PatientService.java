@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.mapper.PatientMapper;
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
@@ -21,17 +21,18 @@ import java.util.stream.Collectors;
 public class PatientService {
     private final PatientValidator patientValidator;
     private final PatientRepository patientRepository;
+    private final PatientMapper patientMapper;
 
     public List<PatientDto> getAllPatients() {
         return patientRepository.findAll().stream()
-                .map(patient -> PatientMapper.mapToDto(patient))
+                .map(patient -> patientMapper.patientToPatientDto(patient))
                 .collect(Collectors.toList());
     }
 
     public PatientDto getPatient(String email) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
-        return PatientMapper.mapToDto(patient);
+        return patientMapper.patientToPatientDto(patient);
     }
 
     @Transactional
@@ -42,7 +43,7 @@ public class PatientService {
             throw new DataAlreadyExistsException("Patient with given email exists");
         }
         patientRepository.save(patient);
-        return PatientMapper.mapToDto(patient);
+        return patientMapper.patientToPatientDto(patient);
     }
 
     @Transactional
@@ -68,7 +69,7 @@ public class PatientService {
         patient.setPhoneNumber(updatedPatient.getPhoneNumber());
         patientRepository.save(patient);
         System.out.println("Patient data has been updated.");
-        return PatientMapper.mapToDto(updatedPatient);
+        return patientMapper.patientToPatientDto(patient);
     }
 
     @Transactional
@@ -81,6 +82,6 @@ public class PatientService {
         patientValidator.isPatientPasswordValid(updatedPatient);
         patientToChangePassword.setPassword(updatedPatient.getPassword());
         patientRepository.save(patientToChangePassword);
-       return PatientMapper.mapToDto(patientToChangePassword);
+       return patientMapper.patientToPatientDto(patientToChangePassword);
     }
 }
