@@ -1,5 +1,6 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
+import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,12 +19,6 @@ public class Patient {
     @Column(nullable = false)
     private long id;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
     @Column(nullable = false)
     private String idCardNo;
 
@@ -38,4 +33,23 @@ public class Patient {
 
     @Column(nullable = false)
     private LocalDate birthDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
+    public static Patient create(CreatePatientCommand patientCommand){
+        return Patient.builder()
+                .firstName(patientCommand.getFirstName())
+                .lastName(patientCommand.getLastName())
+                .idCardNo(patientCommand.getIdCardNo())
+                .phoneNumber(patientCommand.getPhoneNumber())
+                .birthDate(patientCommand.getBirthDate())
+                .user(User.builder()
+                        .email(patientCommand.getEmail())
+                        .username(patientCommand.getUsername())
+                        .password(patientCommand.getPassword())
+                        .build())
+                .build();
+    }
 }
