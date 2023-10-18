@@ -1,7 +1,10 @@
 package com.github.matidominati.medicalclinic.controller;
 
+import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
+import com.github.matidominati.medicalclinic.service.EditPatientDataValidator;
 import com.github.matidominati.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,28 +22,28 @@ public class PatientController {
         return patientService.getAllPatients();
     }
 
-    @GetMapping("/{email}")
-    public PatientDto getPatient(@PathVariable String email) {
-        return patientService.getPatient(email);
+    @GetMapping("/{id}")
+    public PatientDto getPatient(@PathVariable Long id) {
+        return patientService.getPatient(id);
     }
 
     @PostMapping
-    public PatientDto addPatient(@RequestBody Patient patient) {
+    public PatientDto addPatient(@RequestBody CreatePatientCommand patient) {
         return patientService.addPatient(patient);
     }
 
-    @DeleteMapping("/{email}")
-    public void deletePatient(@PathVariable String email) {
-        patientService.deletePatient(email);
+    @DeleteMapping("/{id}")
+    public void deletePatient(@PathVariable Long id) {
+        patientService.deletePatient(id);
     }
 
-    @PutMapping("/{email}")
-    public PatientDto updatePatient(@PathVariable String email, @RequestBody Patient updatedPatient) {
-       return patientService.updatePatient(email, updatedPatient);
+    @PutMapping("/{id}")
+    public PatientDto updatePatient(@PathVariable Long id, @RequestBody EditPatientCommand updatedPatient) {
+       return patientService.updatePatient(id, updatedPatient);
     }
 
-    @PatchMapping("/{email}")
-    public PatientDto changePassword(@PathVariable String email, @RequestBody Patient updatedPatient) {
-        return patientService.changePassword(email, updatedPatient);
+    @PatchMapping("/{id}")
+    public PatientDto changePassword(@PathVariable Long id, @RequestBody EditPatientCommand updatedPatient) {
+        return patientService.changePassword(id, updatedPatient);
     }
 }

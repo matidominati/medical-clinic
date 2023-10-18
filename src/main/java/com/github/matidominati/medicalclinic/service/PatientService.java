@@ -1,13 +1,16 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.github.matidominati.medicalclinic.mapper.PatientMapper;
+import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
-import com.github.matidominati.medicalclinic.exception.ChangeIdException;
 import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
+import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
+import com.github.matidominati.medicalclinic.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,69 +22,85 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PatientService {
-    private final PatientValidator patientValidator;
+    private final CreatePatientDataValidator createPatientDataValidator;
+    private final EditPatientDataValidator editPatientDataValidator;
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final UserRepository userRepository;
 
     public List<PatientDto> getAllPatients() {
         return patientRepository.findAll().stream()
-                .map(patient -> patientMapper.patientToPatientDto(patient))
+                .map(patientMapper::patientToPatientDto)
                 .collect(Collectors.toList());
     }
 
-    public PatientDto getPatient(String email) {
-        Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
+    public PatientDto getPatient(Long id) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exists"));
         return patientMapper.patientToPatientDto(patient);
     }
 
     @Transactional
-    public PatientDto addPatient(Patient patient) {
-        patientValidator.checkPatientData(patient);
-        Optional<Patient> optionalPatient = patientRepository.findByEmail(patient.getEmail());
-        if (optionalPatient.isPresent()) {
-            throw new DataAlreadyExistsException("Patient with given email exists");
+    public PatientDto addPatient(CreatePatientCommand patientCommand) {
+        Patient patient = Patient.create(patientCommand);
+        createPatientDataValidator.checkPatientData(patientCommand);
+        Optional<User> optionalUser = userRepository.findByEmail(patient.getUser().getEmail());
+        if (optionalUser.isPresent()) {
+            throw new DataAlreadyExistsException("User with given email exists");
         }
         patientRepository.save(patient);
         return patientMapper.patientToPatientDto(patient);
     }
 
     @Transactional
-    public void deletePatient(String email) {
-        Optional<Patient> patientToDelete = patientRepository.findByEmail(email);
+    public void deletePatient(Long id) {
+        Optional<Patient> patientToDelete = patientRepository.findById(id);
         if (patientToDelete.isEmpty()) {
-            throw new DataNotFoundException("The patient with the given email address does not exists in the database");
+            throw new DataNotFoundException("The patient with the given ID address does not exists in the database");
         }
         patientRepository.delete(patientToDelete.get());
     }
 
     @Transactional
-    public PatientDto updatePatient(String email, Patient updatedPatient) {
-        patientValidator.checkPatientData(updatedPatient);
-        Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
-        if (!patient.getIdCardNo().equals(updatedPatient.getIdCardNo())) {
-            throw new ChangeIdException("Changing ID number is not allowed!");
-        }
-        patient.setPassword(updatedPatient.getPassword());
-        patient.setFirstName(updatedPatient.getFirstName());
-        patient.setLastName(updatedPatient.getLastName());
-        patient.setPhoneNumber(updatedPatient.getPhoneNumber());
-        patientRepository.save(patient);
-        System.out.println("Patient data has been updated.");
-        return patientMapper.patientToPatientDto(patient);
-    }
+    public PatientDto updatePatient(Long id, EditPatientCommand updatedPatient) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exists"));
 
-    @Transactional
-    public PatientDto changePassword(String email, Patient updatedPatient) {
-        Patient patientToChangePassword = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided email does not exists"));
-        if (patientToChangePassword.getPassword().equals(updatedPatient.getPassword())) {
-            throw new IncorrectPasswordException("New password cannot be the same as the old password");
+        if (updatedPatient.getEmail() != null && !updatedPatient.getEmail().isEmpty()) {
+            patient.getUser().setEmail(updatedPatient.getEmail());
         }
-        patientValidator.isPatientPasswordValid(updatedPatient);
-        patientToChangePassword.setPassword(updatedPatient.getPassword());
-        patientRepository.save(patientToChangePassword);
-       return patientMapper.patientToPatientDto(patientToChangePassword);
+        if (updatedPatient.getPassword() != null && !updatedPatient.getPassword().isEmpty()) {
+            if (editPatientDataValidator.isPatientPasswordValid(updatedPatient)) {
+                patient.getUser().setPassword(updatedPatient.getPassword());
+            }
+        }
+        if (updatedPatient.getFirstName() != null && !updatedPatient.getFirstName().isEmpty()) {
+            patient.setFirstName(updatedPatient.getFirstName());
+        }
+        if (updatedPatient.getLastName() != null && !updatedPatient.getLastName().isEmpty()) {
+            patient.setLastName(updatedPatient.getLastName());
+        }
+        if (updatedPatient.getPhoneNumber() != null && !updatedPatient.getPhoneNumber().isEmpty()) {
+            if (editPatientDataValidator.isPatientPhoneNumberValid(updatedPatient)) {
+                patient.setPhoneNumber(updatedPatient.getPhoneNumber());
+            }
+        }
+            patientRepository.save(patient);
+            System.out.println("Patient data has been updated.");
+            return patientMapper.patientToPatientDto(patient);
+        }
+
+        @Transactional
+        public PatientDto changePassword (Long id, EditPatientCommand updatedPatient){
+            Patient patientToChangePassword = patientRepository.findById(id)
+                    .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exists"));
+            if (patientToChangePassword.getUser().getPassword().equals(updatedPatient.getPassword())) {
+                throw new IncorrectPasswordException("New password cannot be the same as the old password");
+            }
+            editPatientDataValidator.isPatientPasswordValid(updatedPatient);
+            patientToChangePassword.getUser().setPassword((updatedPatient.getPassword()));
+
+            patientRepository.save(patientToChangePassword);
+            return patientMapper.patientToPatientDto(patientToChangePassword);
+        }
     }
-}
