@@ -3,8 +3,6 @@ package com.github.matidominati.medicalclinic.controller;
 import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
-import com.github.matidominati.medicalclinic.model.entity.Patient;
-import com.github.matidominati.medicalclinic.service.EditPatientDataValidator;
 import com.github.matidominati.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +26,8 @@ public class PatientController {
     }
 
     @PostMapping
-    public PatientDto addPatient(@RequestBody CreatePatientCommand patient) {
-        return patientService.addPatient(patient);
+    public PatientDto addPatient(@RequestBody CreatePatientCommand createPatient) {
+        return patientService.addPatient(createPatient);
     }
 
     @DeleteMapping("/{id}")
