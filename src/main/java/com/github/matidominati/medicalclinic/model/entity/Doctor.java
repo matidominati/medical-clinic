@@ -1,13 +1,16 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
-import com.github.matidominati.medicalclinic.model.dto.CreateDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.InstitutionDto;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.CreateDoctorCommand;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -42,7 +45,6 @@ public class Doctor {
                 .firstName(doctorCommand.getFirstName())
                 .lastName(doctorCommand.getLastName())
                 .specialization(doctorCommand.getSpecialization())
-                .institutions(doctorCommand.getInstitutions())
                 .phoneNumber(doctorCommand.getPhoneNumber())
                 .user(User.builder()
                         .email(doctorCommand.getEmail())
@@ -50,6 +52,5 @@ public class Doctor {
                         .password(doctorCommand.getPassword())
                         .build())
                 .build();
-
     }
 }

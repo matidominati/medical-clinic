@@ -1,8 +1,8 @@
 package com.github.matidominati.medicalclinic.controller;
 
-import com.github.matidominati.medicalclinic.model.dto.CreateDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.CreateDoctorCommand;
 import com.github.matidominati.medicalclinic.model.dto.DoctorDto;
-import com.github.matidominati.medicalclinic.model.dto.EditDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.EditDoctorCommand;
 import com.github.matidominati.medicalclinic.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

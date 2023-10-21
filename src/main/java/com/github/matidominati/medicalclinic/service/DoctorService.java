@@ -2,9 +2,9 @@ package com.github.matidominati.medicalclinic.service;
 
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.mapper.DoctorMapper;
-import com.github.matidominati.medicalclinic.model.dto.CreateDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.CreateDoctorCommand;
 import com.github.matidominati.medicalclinic.model.dto.DoctorDto;
-import com.github.matidominati.medicalclinic.model.dto.EditDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.EditDoctorCommand;
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.repository.DoctorRepository;
@@ -34,7 +34,7 @@ public class DoctorService {
 
     public DoctorDto getDoctor(Long id) {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Doctor with given ID does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Doctor with given ID does not exist"));
         return doctorMapper.doctorToDoctorDto(doctor);
     }
 
@@ -42,14 +42,18 @@ public class DoctorService {
     public DoctorDto addDoctor(CreateDoctorCommand createDoctor) {
         DataValidator.checkData(createDoctor.getFirstName(), createDoctor.getLastName(),
                 createDoctor.getPhoneNumber(), createDoctor.getPassword(), createDoctor.getEmail());
-        DataValidator.checkIfDataNotExists(createDoctor.getEmail(), createDoctor.getUsername(), userRepository);
+        DataValidator.checkIfDataDoesNotExists(createDoctor.getEmail(), createDoctor.getUsername(), userRepository);
+        List<Institution> institutions = createDoctor.getInstitutions().stream()
+                .map(institutionDto -> {
+                    Institution institution = new Institution();
+                    institution.setName(institutionDto.getName());
+                    institution.setAddress(institutionDto.getAddress());
+                    institutionRepository.save(institution);
+                    return institution;
+                })
+                .collect(Collectors.toList());
         Doctor doctor = Doctor.create(createDoctor);
-        Institution institution = Institution.builder()
-                .name(createDoctor.getInstitutionName())
-                .address(createDoctor.getInstitutionAddress())
-                .build();
-        institutionRepository.save(institution);
-        doctor.setInstitutions(List.of(institution));
+        doctor.setInstitutions(institutions);
         doctorRepository.save(doctor);
         return doctorMapper.doctorToDoctorDto(doctor);
     }
@@ -58,7 +62,7 @@ public class DoctorService {
     public void deleteDoctor(Long id) {
         Optional<Doctor> doctorToDelete = doctorRepository.findById(id);
         if (doctorToDelete.isEmpty()) {
-            throw new DataNotFoundException("The doctor with the given ID does not exists in the database");
+            throw new DataNotFoundException("The doctor with the given ID does not exist in the database");
         }
         doctorRepository.delete(doctorToDelete.get());
     }
@@ -66,7 +70,7 @@ public class DoctorService {
     @Transactional
     public DoctorDto updateDoctor(Long id, EditDoctorCommand updatedDoctor) {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Doctor with the provided ID does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Doctor with the provided ID does not exist"));
         DataValidator.checkDoctorDataToUpdate(updatedDoctor.getEmail(), updatedDoctor.getPassword(), updatedDoctor.getFirstName(),
                 updatedDoctor.getLastName(), updatedDoctor.getPhoneNumber(), doctor);
         doctorRepository.save(doctor);

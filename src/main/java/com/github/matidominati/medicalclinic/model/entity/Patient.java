@@ -1,6 +1,6 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
-import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.CreatePatientCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

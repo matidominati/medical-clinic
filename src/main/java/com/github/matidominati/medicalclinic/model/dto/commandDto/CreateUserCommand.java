@@ -1,4 +1,4 @@
-package com.github.matidominati.medicalclinic.model.dto;
+package com.github.matidominati.medicalclinic.model.dto.commandDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +16,5 @@ public class CreateUserCommand {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-
 }
 

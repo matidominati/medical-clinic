@@ -5,10 +5,13 @@ import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-
+@Component
+@AllArgsConstructor
 public class DataValidator {
 
     public static boolean isPasswordValid(String password, String firstName, String lastName) {
@@ -61,14 +64,14 @@ public class DataValidator {
         }
     }
 
-    public static void checkIfDataNotExists(String email, String username, UserRepository userRepository) {
+    public static void checkIfDataDoesNotExists(String email, String username, UserRepository userRepository) {
         Optional<User> optionalUserEmail = userRepository.findByEmail(email);
         if (optionalUserEmail.isPresent()) {
-            throw new DataAlreadyExistsException("User with given email exists");
+            throw new DataAlreadyExistsException("User with given email exist");
         }
         Optional<User> optionalUserUsername = userRepository.findByUsername(username);
         if (optionalUserUsername.isPresent()) {
-            throw new DataAlreadyExistsException("User with given username exists");
+            throw new DataAlreadyExistsException("User with given username exist");
         }
     }
     public static void checkPatientDataToUpdate(String email, String password, String firstName, String lastName,

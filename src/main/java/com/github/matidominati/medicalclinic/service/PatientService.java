@@ -1,14 +1,12 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.github.matidominati.medicalclinic.mapper.PatientMapper;
-import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
-import com.github.matidominati.medicalclinic.model.dto.EditPatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
-import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsException;
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
-import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -34,7 +32,7 @@ public class PatientService {
 
     public PatientDto getPatient(Long id) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exist"));
         return patientMapper.patientToPatientDto(patient);
     }
 
@@ -43,7 +41,7 @@ public class PatientService {
 
         DataValidator.checkData(createPatient.getFirstName(), createPatient.getLastName(), createPatient.getPhoneNumber(),
                 createPatient.getPassword(), createPatient.getEmail());
-        DataValidator.checkIfDataNotExists(createPatient.getEmail(), createPatient.getUsername(), userRepository);
+        DataValidator.checkIfDataDoesNotExists(createPatient.getEmail(), createPatient.getUsername(), userRepository);
         Patient patient = Patient.create(createPatient);
         patientRepository.save(patient);
         userRepository.save(patient.getUser());
@@ -53,7 +51,7 @@ public class PatientService {
     public void deletePatient(Long id) {
         Optional<Patient> patientToDelete = patientRepository.findById(id);
         if (patientToDelete.isEmpty()) {
-            throw new DataNotFoundException("The patient with the given ID does not exists in the database");
+            throw new DataNotFoundException("The patient with the given ID does not exist in the database");
         }
         patientRepository.delete(patientToDelete.get());
     }
@@ -61,7 +59,7 @@ public class PatientService {
     @Transactional
     public PatientDto updatePatient(Long id, EditPatientCommand updatedPatient) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exist"));
         DataValidator.checkPatientDataToUpdate(updatedPatient.getEmail(), updatedPatient.getPassword(), updatedPatient.getFirstName(),
                 updatedPatient.getLastName(), updatedPatient.getPhoneNumber(), patient);
         patientRepository.save(patient);
@@ -72,7 +70,7 @@ public class PatientService {
     @Transactional
     public PatientDto changePassword(Long id, EditPatientCommand updatedPatient) {
         Patient patientToChangePassword = patientRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exists"));
+                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exist"));
         if (patientToChangePassword.getUser().getPassword().equals(updatedPatient.getPassword())) {
             throw new IncorrectPasswordException("New password cannot be the same as the old password");
         }

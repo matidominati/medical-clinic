@@ -1,6 +1,6 @@
-package com.github.matidominati.medicalclinic.model.dto;
+package com.github.matidominati.medicalclinic.model.dto.commandDto;
 
-import com.github.matidominati.medicalclinic.model.entity.Institution;
+import com.github.matidominati.medicalclinic.model.dto.InstitutionDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateDoctorCommand extends CreateUserCommand {
     private String specialization;
-    private List<Institution> institutions;
-    private String institutionName;
-    private String institutionAddress;
+    private List<InstitutionDto> institutions;
 }
 

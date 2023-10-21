@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.controller;
 
-import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
-import com.github.matidominati.medicalclinic.model.dto.EditPatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
