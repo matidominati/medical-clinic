@@ -1,8 +1,6 @@
 package com.github.matidominati.medicalclinic.repository;
 
 import com.github.matidominati.medicalclinic.model.entity.Institution;
-import com.github.matidominati.medicalclinic.model.entity.User;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

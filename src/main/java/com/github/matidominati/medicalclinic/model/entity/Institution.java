@@ -1,15 +1,15 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateInstitutionCommand;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,4 +22,25 @@ public class Institution {
     private String address;
     @ManyToMany(mappedBy = "institutions")
     private List<Doctor> doctors;
+
+
+    public static Institution create(CreateInstitutionCommand createInstitution) {
+        return Institution.builder()
+                .name(createInstitution.getName())
+                .address(createInstitution.getAddress())
+                .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Institution that = (Institution) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash();
+    }
 }

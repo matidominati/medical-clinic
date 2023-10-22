@@ -1,19 +1,15 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
-import com.github.matidominati.medicalclinic.model.dto.InstitutionDto;
-import com.github.matidominati.medicalclinic.model.dto.commandDto.CreateDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateDoctorCommand;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -29,7 +25,7 @@ public class Doctor {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", unique = true)
-    private User user;
+    private UserData userData;
 
     @ManyToMany
     @JoinTable
@@ -40,17 +36,33 @@ public class Doctor {
             )
     private List<Institution> institutions;
 
+    @OneToMany(mappedBy = "doctor")
+    private List<Visit> visits;
+
     public static Doctor create(CreateDoctorCommand doctorCommand) {
         return Doctor.builder()
                 .firstName(doctorCommand.getFirstName())
                 .lastName(doctorCommand.getLastName())
                 .specialization(doctorCommand.getSpecialization())
                 .phoneNumber(doctorCommand.getPhoneNumber())
-                .user(User.builder()
+                .userData(UserData.builder()
                         .email(doctorCommand.getEmail())
                         .username(doctorCommand.getUsername())
                         .password(doctorCommand.getPassword())
                         .build())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return Objects.equals(id, doctor.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash();
     }
 }

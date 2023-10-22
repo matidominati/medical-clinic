@@ -1,4 +1,4 @@
-package com.github.matidominati.medicalclinic.model.dto.commandDto;
+package com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand;
 
 import com.github.matidominati.medicalclinic.model.dto.InstitutionDto;
 import lombok.AllArgsConstructor;

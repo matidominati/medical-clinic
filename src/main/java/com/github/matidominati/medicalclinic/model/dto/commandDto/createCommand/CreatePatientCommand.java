@@ -1,5 +1,6 @@
-package com.github.matidominati.medicalclinic.model.dto.commandDto;
+package com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand;
 
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateUserCommand;
 import lombok.*;
 
 import java.time.LocalDate;

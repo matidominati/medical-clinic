@@ -1,21 +1,22 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
-import com.github.matidominati.medicalclinic.model.dto.commandDto.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreatePatientCommand;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
 public class Patient {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
@@ -34,22 +35,38 @@ public class Patient {
     @Column(nullable = false)
     private LocalDate birthDate;
 
+    @OneToMany(mappedBy = "patient")
+    private List<Visit> visits;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", unique = true)
-    private User user;
+    private UserData userData;
 
-    public static Patient create(CreatePatientCommand patientCommand){
+    public static Patient create(CreatePatientCommand patientCommand) {
         return Patient.builder()
                 .firstName(patientCommand.getFirstName())
                 .lastName(patientCommand.getLastName())
                 .idCardNo(patientCommand.getIdCardNo())
                 .phoneNumber(patientCommand.getPhoneNumber())
                 .birthDate(patientCommand.getBirthDate())
-                .user(User.builder()
+                .userData(UserData.builder()
                         .email(patientCommand.getEmail())
                         .username(patientCommand.getUsername())
                         .password(patientCommand.getPassword())
                         .build())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return Objects.equals(id, patient.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash();
     }
 }
