@@ -1,7 +1,5 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
-//import com.github.matidominati.medicalclinic.model.enums.VisitType;
-
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateVisitCommand;
 import com.github.matidominati.medicalclinic.model.enums.VisitType;
 import jakarta.persistence.*;
@@ -47,7 +45,6 @@ public class Visit {
                 .startDateTime(createVisit.getStartDateTime())
                 .endDateTime(createVisit.getEndDateTime())
                 .price(createVisit.getPrice())
-//                .institution(createVisit.getInstitution())
                 .build();
     }
 

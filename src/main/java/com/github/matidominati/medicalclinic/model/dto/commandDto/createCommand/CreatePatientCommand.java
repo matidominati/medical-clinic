@@ -1,6 +1,5 @@
 package com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand;
 
-import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateUserCommand;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
 public class CreatePatientCommand extends CreateUserCommand {
     private String idCardNo;
     private LocalDate birthDate;
-
 }
 
 

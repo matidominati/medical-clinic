@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 @Data
 public class VisitDto {
     private BigDecimal price;
-    private InstitutionDto institution;
+    private String institutionName;
+    private String institutionAddress;
+    private Long doctorId;
     private LocalDateTime date;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;

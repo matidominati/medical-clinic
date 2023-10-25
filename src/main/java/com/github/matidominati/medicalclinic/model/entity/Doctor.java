@@ -25,7 +25,7 @@ public class Doctor {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", unique = true)
-    private UserData userData;
+    private User user;
 
     @ManyToMany
     @JoinTable
@@ -45,7 +45,7 @@ public class Doctor {
                 .lastName(doctorCommand.getLastName())
                 .specialization(doctorCommand.getSpecialization())
                 .phoneNumber(doctorCommand.getPhoneNumber())
-                .userData(UserData.builder()
+                .user(User.builder()
                         .email(doctorCommand.getEmail())
                         .username(doctorCommand.getUsername())
                         .password(doctorCommand.getPassword())

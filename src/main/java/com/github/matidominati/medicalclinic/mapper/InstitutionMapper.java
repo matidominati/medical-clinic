@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 public interface InstitutionMapper {
 
     @Mapping(source = "doctors", target = "doctorIds", qualifiedByName = "mapIds")
-    InstitutionDto InstitutionToInstitutionDto(Institution institution);
+    InstitutionDto institutionToInstitutionDto(Institution institution);
 
     @Named("mapIds")
     default List<Long> mapIds(List<Doctor> doctors) {
-        if(doctors == null) {
+        if (doctors == null) {
             return new ArrayList<>();
         }
         return doctors.stream()

@@ -4,18 +4,24 @@ import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.mapper.VisitMapper;
 import com.github.matidominati.medicalclinic.model.dto.VisitDto;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateVisitCommand;
-import com.github.matidominati.medicalclinic.model.entity.*;
+import com.github.matidominati.medicalclinic.model.entity.Doctor;
+import com.github.matidominati.medicalclinic.model.entity.Institution;
+import com.github.matidominati.medicalclinic.model.entity.Patient;
+import com.github.matidominati.medicalclinic.model.entity.Visit;
 import com.github.matidominati.medicalclinic.model.enums.VisitType;
 import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.InstitutionRepository;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import com.github.matidominati.medicalclinic.repository.VisitRepository;
+import com.github.matidominati.medicalclinic.service.validator.VisitDataValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.github.matidominati.medicalclinic.service.validator.CRUDataValidator.findByIdOrThrow;
 
 @Service
 @RequiredArgsConstructor
@@ -28,26 +34,24 @@ public class VisitService {
 
     public List<VisitDto> getAllVisits() {
         return visitRepository.findAll().stream()
-                .map(visit -> visitMapper.visitToVisitDto(visit))
+                .map(visitMapper::visitToVisitDto)
                 .collect(Collectors.toList());
     }
 
-
-    public VisitDto getVisitsById(Long id) {
-        Visit visit = visitRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Visit with provided ID does not exist"));
+    public VisitDto getVisitsById(Long visitId) {
+        Visit visit = findByIdOrThrow(visitId, visitRepository, "Visit");
         return visitMapper.visitToVisitDto(visit);
     }
 
     @Transactional
-    public VisitDto addVisit(CreateVisitCommand createVisit, Long doctorId, Long institutionId) {
-        Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(()-> new DataNotFoundException("Doctor with the provided ID does not exist"));
-        Institution institution = institutionRepository.findById(institutionId)
-                .orElseThrow(() -> new DataNotFoundException("Institution with the provided ID does not exist"));
+    public VisitDto createVisit(CreateVisitCommand createVisit, Long doctorId, Long institutionId) {
+        Doctor doctor = findByIdOrThrow(doctorId, doctorRepository, "Doctor");
+        Institution institution = findByIdOrThrow(institutionId, institutionRepository, "Institution");
         if (!doctor.getInstitutions().contains(institution)){
             throw new DataNotFoundException("Doctor with the provided ID does not cooperate with this institution");
         }
+        VisitDataValidator.checkIfDoctorCanCreateVisit(doctor, createVisit);
+        VisitDataValidator.checkIfVisitTimeIsCorrect(createVisit.getStartDateTime(), createVisit.getEndDateTime());
         Visit visit = Visit.create(createVisit);
         visit.setDoctor(doctor);
         visit.setInstitution(institution);
@@ -56,20 +60,21 @@ public class VisitService {
     }
     @Transactional
     public VisitDto bookVisit(Long patientId, Long visitId) {
-        Patient patientToBookVisit = patientRepository.findById(patientId)
-                .orElseThrow(() -> new DataNotFoundException("Patient with the provided ID does not exist"));
-
-        Visit visitToBook = visitRepository.findById(visitId)
-                .orElseThrow(() -> new DataNotFoundException("Visit with the provided ID does not exist"));
-
-        if (visitToBook.getStatus() != VisitType.CREATED) {
-            throw new DataNotFoundException("Visit is unavailable");
-        }
+        Patient patientToBookVisit = findByIdOrThrow(patientId, patientRepository, "Patient");
+        Visit visitToBook = VisitDataValidator.checkIfVisitIsAvailable(visitId, visitRepository);
+        VisitDataValidator.checkIfPatientCanBookVisit(visitToBook, patientToBookVisit);
         patientToBookVisit.getVisits().add(visitToBook);
         visitToBook.setStatus(VisitType.SCHEDULED);
         visitToBook.setPatient(patientToBookVisit);
         visitRepository.save(visitToBook);
         patientRepository.save(patientToBookVisit);
         return visitMapper.visitToVisitDto(visitToBook);
+    }
+
+    public List<VisitDto> getAllPatientVisits(Long patientId) {
+        Patient patient = findByIdOrThrow(patientId, patientRepository, "Patient");
+        return patient.getVisits().stream()
+                .map(visitMapper::visitToVisitDto)
+                .collect(Collectors.toList());
     }
 }

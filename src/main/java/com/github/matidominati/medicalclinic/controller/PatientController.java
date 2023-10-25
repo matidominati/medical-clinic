@@ -1,9 +1,9 @@
 package com.github.matidominati.medicalclinic.controller;
 
+import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.dto.VisitDto;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreatePatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditPatientCommand;
-import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.service.PatientService;
 import com.github.matidominati.medicalclinic.service.VisitService;
 import lombok.RequiredArgsConstructor;
@@ -47,15 +47,5 @@ public class PatientController {
     @PatchMapping("/{id}")
     public PatientDto changePassword(@PathVariable Long id, @RequestBody EditPatientCommand updatedPatient) {
         return patientService.changePassword(id, updatedPatient);
-    }
-
-    @PatchMapping("/{patientId}/visits/book/{visitId}")
-    public VisitDto bookVisit(@PathVariable Long patientId, @PathVariable Long visitId) {
-        return visitService.bookVisit(patientId, visitId);
-    }
-
-    @GetMapping("{patientId}/visits")
-    public List<VisitDto> getAllVisits(@PathVariable Long patientId) {
-        return patientService.getAllVisits(patientId);
     }
 }

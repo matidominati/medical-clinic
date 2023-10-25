@@ -1,8 +1,5 @@
 package com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand;
 
-//import com.github.matidominati.medicalclinic.model.enums.VisitType;
-
-import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.model.enums.VisitType;
 import lombok.AllArgsConstructor;
@@ -20,7 +17,7 @@ import java.time.LocalDateTime;
 public class CreateVisitCommand {
     private VisitType status;
     private BigDecimal price;
-    private Doctor doctor;
+    private Long doctorId;
     private Institution institution;
     private LocalDateTime date;
     private LocalDateTime startDateTime;

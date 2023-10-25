@@ -1,63 +1,70 @@
 package com.github.matidominati.medicalclinic.service;
 
-import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.mapper.InstitutionMapper;
 import com.github.matidominati.medicalclinic.model.dto.InstitutionDto;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateInstitutionCommand;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditInstitutionCommand;
+import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
+import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.InstitutionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.github.matidominati.medicalclinic.service.validator.CRUDataValidator.findByIdOrThrow;
 
 @Service
 @RequiredArgsConstructor
 public class InstitutionService {
     private final InstitutionRepository institutionRepository;
     private final InstitutionMapper institutionMapper;
+    private final DoctorRepository doctorRepository;
 
     public List<InstitutionDto> getAllInstitutions() {
         return institutionRepository.findAll().stream()
-                .map(institution -> institutionMapper.InstitutionToInstitutionDto(institution))
+                .map(institutionMapper::institutionToInstitutionDto)
                 .collect(Collectors.toList());
     }
 
     public InstitutionDto getInstitutionById(Long id) {
-        Institution institution = institutionRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Institution with the provided ID does not exist"));
-        return institutionMapper.InstitutionToInstitutionDto(institution);
+        Institution institution = findByIdOrThrow(id, institutionRepository, "Institution");
+        return institutionMapper.institutionToInstitutionDto(institution);
     }
 
     @Transactional
     public InstitutionDto addInstitution(CreateInstitutionCommand createInstitution) {
         Institution institution = Institution.create(createInstitution);
         institutionRepository.save(institution);
-        return institutionMapper.InstitutionToInstitutionDto(institution);
+        return institutionMapper.institutionToInstitutionDto(institution);
     }
 
     @Transactional
     public void deleteInstitution(Long id) {
-        Optional<Institution> institutionToDelete = institutionRepository.findById(id);
-        if (institutionToDelete.isEmpty()) {
-            throw new DataNotFoundException("The institution with the given ID does not exist in the database");
-        }
-        institutionRepository.delete(institutionToDelete.get());
+        Institution institutionToDelete = findByIdOrThrow(id, institutionRepository, "Institution");
+        institutionRepository.delete(institutionToDelete);
     }
 
     @Transactional
     public InstitutionDto updateInstitution(Long id, EditInstitutionCommand updatedInstitution) {
-        Institution institution = institutionRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Institution with the provided ID does not exist"));
+        Institution institution = findByIdOrThrow(id, institutionRepository, "Institution");
         institutionRepository.save(institution);
         institution.setName(updatedInstitution.getName());
         institution.setAddress(updatedInstitution.getAddress());
         institution.setDoctors(updatedInstitution.getDoctors());
-        return  institutionMapper.InstitutionToInstitutionDto(institution);
+        return  institutionMapper.institutionToInstitutionDto(institution);
+    }
 
+    @Transactional
+    public InstitutionDto addDoctor(Long doctorId, Long institutionId) {
+        Doctor doctorToAdd = findByIdOrThrow(doctorId, doctorRepository, "Doctor");
+        Institution institution = findByIdOrThrow(institutionId, institutionRepository, "Institution");
+        doctorToAdd.getInstitutions().add(institution);
+        doctorRepository.save(doctorToAdd);
+        institutionRepository.saveAndFlush(institution);
+        return institutionMapper.institutionToInstitutionDto(institution);
     }
 }

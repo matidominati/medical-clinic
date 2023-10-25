@@ -12,7 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserData {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -20,17 +20,17 @@ public class UserData {
     private String username;
     private String email;
     private String password;
-    @OneToOne(mappedBy = "userData", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Patient patient;
-    @OneToOne(mappedBy = "userData", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Doctor doctor;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserData userData = (UserData) o;
-        return Objects.equals(id, userData.id);
+        User user = (User) o;
+        return Objects.equals(id, user.id);
     }
 
     @Override

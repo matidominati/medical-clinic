@@ -39,4 +39,9 @@ public class InstitutionController {
     public InstitutionDto updateInstitution(@PathVariable Long id, @RequestBody EditInstitutionCommand editInstitution) {
       return institutionService.updateInstitution(id, editInstitution);
     }
+
+    @PatchMapping("/{institutionId}/add-doctor/{doctorId}")
+    public InstitutionDto addDoctor(@PathVariable Long doctorId, @PathVariable Long institutionId) {
+        return institutionService.addDoctor(doctorId, institutionId);
+    }
 }

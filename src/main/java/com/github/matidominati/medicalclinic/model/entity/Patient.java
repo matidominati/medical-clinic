@@ -40,7 +40,7 @@ public class Patient {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", unique = true)
-    private UserData userData;
+    private User user;
 
     public static Patient create(CreatePatientCommand patientCommand) {
         return Patient.builder()
@@ -49,7 +49,7 @@ public class Patient {
                 .idCardNo(patientCommand.getIdCardNo())
                 .phoneNumber(patientCommand.getPhoneNumber())
                 .birthDate(patientCommand.getBirthDate())
-                .userData(UserData.builder()
+                .user(User.builder()
                         .email(patientCommand.getEmail())
                         .username(patientCommand.getUsername())
                         .password(patientCommand.getPassword())
