@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class VisitDto {
+    private Long id;
     private BigDecimal price;
     private String institutionName;
     private String institutionAddress;

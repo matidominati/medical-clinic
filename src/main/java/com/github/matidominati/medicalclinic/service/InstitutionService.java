@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.matidominati.medicalclinic.service.validator.CRUDataValidator.findByIdOrThrow;
+import static com.github.matidominati.medicalclinic.service.validator.CRUDDataValidator.findByIdOrThrow;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +55,7 @@ public class InstitutionService {
         institution.setName(updatedInstitution.getName());
         institution.setAddress(updatedInstitution.getAddress());
         institution.setDoctors(updatedInstitution.getDoctors());
-        return  institutionMapper.institutionToInstitutionDto(institution);
+        return institutionMapper.institutionToInstitutionDto(institution);
     }
 
     @Transactional

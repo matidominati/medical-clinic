@@ -30,5 +30,3 @@ public class VisitController {
         return visitService.getAllPatientVisits(patientId);
     }
 }
-
-

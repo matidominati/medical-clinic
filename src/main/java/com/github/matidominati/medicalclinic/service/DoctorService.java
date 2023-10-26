@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.matidominati.medicalclinic.service.validator.CRUDataValidator.*;
+import static com.github.matidominati.medicalclinic.service.validator.CRUDDataValidator.*;
 
 @Service
 @RequiredArgsConstructor

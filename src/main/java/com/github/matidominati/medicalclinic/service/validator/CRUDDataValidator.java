@@ -5,15 +5,17 @@ import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-@AllArgsConstructor
-public class CRUDataValidator {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class CRUDDataValidator {
     public static <T> T findByIdOrThrow(Long id, JpaRepository<T, Long> jpaRepository, String entityName) {
         Optional<T> entity = jpaRepository.findById(id);
         if (entity.isEmpty()) {
@@ -75,11 +77,11 @@ public class CRUDataValidator {
     public static void checkIfDataDoesNotExists(String email, String username, UserRepository userRepository) {
         Optional<User> optionalUserEmail = userRepository.findByEmail(email);
         if (optionalUserEmail.isPresent()) {
-            throw new DataAlreadyExistsException("User with given email exist");
+            throw new DataAlreadyExistsException("User with given email exists");
         }
         Optional<User> optionalUserUsername = userRepository.findByUsername(username);
         if (optionalUserUsername.isPresent()) {
-            throw new DataAlreadyExistsException("User with given username exist");
+            throw new DataAlreadyExistsException("User with given username exists");
         }
     }
     public static void checkPatientDataToUpdate(String email, String password, String firstName, String lastName,

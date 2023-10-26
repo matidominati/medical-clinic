@@ -1,25 +1,21 @@
 package com.github.matidominati.medicalclinic.service;
 
 import com.github.matidominati.medicalclinic.mapper.PatientMapper;
-import com.github.matidominati.medicalclinic.mapper.VisitMapper;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreatePatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
-import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.exception.IncorrectPasswordException;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
-import com.github.matidominati.medicalclinic.service.validator.CRUDataValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.github.matidominati.medicalclinic.service.validator.CRUDataValidator.*;
+import static com.github.matidominati.medicalclinic.service.validator.CRUDDataValidator.*;
 
 @Service
 @RequiredArgsConstructor

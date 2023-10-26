@@ -1,31 +1,32 @@
 package com.github.matidominati.medicalclinic.mapper;
 
+import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.model.dto.VisitDto;
-import com.github.matidominati.medicalclinic.model.entity.Doctor;
-import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.model.entity.Visit;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface VisitMapper {
-    @Mapping(source = "doctor", target = "doctorId", qualifiedByName = "mapDoctorId")
-    @Mapping(source = "institution", target = "institutionName", qualifiedByName = "mapInstitutionName")
-    @Mapping(source = "institution", target = "institutionAddress", qualifiedByName = "mapInstitutionAddress")
+    @Mapping(source = "doctor.id", target = "doctorId")
+    @Mapping(source = "institution.name", target = "institutionName")
+    @Mapping(source = "institution.address", target = "institutionAddress")
     VisitDto visitToVisitDto(Visit visit);
+    default VisitDto visitToVisitDtoSafe(Visit visit) {
+        if (visit == null) {
+            throw new DataNotFoundException("Visit is null");
+        }
 
-    @Named("mapDoctorId")
-    default Long mapDoctorId(Doctor doctor) {
-        return doctor.getId();
-    }
-    @Named("mapInstitutionName")
-    default String mapInstitutionName(Institution institution) {
-        return institution.getName();
-    }
-    @Named("mapInstitutionAddress")
-    default String mapInstitutionAddress(Institution institution) {
-        return institution.getAddress();
+        if (visit.getDoctor() == null || visit.getDoctor().getId() == null) {
+            throw new DataNotFoundException("Doctor data not found");
+        }
+
+        if (visit.getInstitution() == null || visit.getInstitution().getName() == null || visit.getInstitution().getAddress() == null) {
+            throw new DataNotFoundException("Institution data not found");
+        }
+
+        return visitToVisitDto(visit);
     }
 }
+

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.matidominati.medicalclinic.service.validator.CRUDataValidator.findByIdOrThrow;
+import static com.github.matidominati.medicalclinic.service.validator.CRUDDataValidator.findByIdOrThrow;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +58,7 @@ public class VisitService {
         visitRepository.save(visit);
         return visitMapper.visitToVisitDto(visit);
     }
+
     @Transactional
     public VisitDto bookVisit(Long patientId, Long visitId) {
         Patient patientToBookVisit = findByIdOrThrow(patientId, patientRepository, "Patient");

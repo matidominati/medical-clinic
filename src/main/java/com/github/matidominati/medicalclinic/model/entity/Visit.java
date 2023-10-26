@@ -53,7 +53,7 @@ public class Visit {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Visit visit = (Visit) o;
-        return Objects.equals(id, visit.id);
+        return id != null && Objects.equals(id, visit.id);
     }
 
     @Override

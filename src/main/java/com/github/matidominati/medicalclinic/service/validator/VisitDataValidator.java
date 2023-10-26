@@ -9,17 +9,16 @@ import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.model.entity.Visit;
 import com.github.matidominati.medicalclinic.model.enums.VisitType;
 import com.github.matidominati.medicalclinic.repository.VisitRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Component
-@AllArgsConstructor
-public class VisitDataValidator {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class VisitDataValidator {
 
     public static Visit checkIfVisitIsAvailable(Long visitId, VisitRepository visitRepository) {
         Visit visit = visitRepository.findById(visitId)
