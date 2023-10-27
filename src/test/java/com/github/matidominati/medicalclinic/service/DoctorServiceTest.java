@@ -6,10 +6,8 @@ import com.github.matidominati.medicalclinic.mapper.DoctorMapper;
 import com.github.matidominati.medicalclinic.model.dto.DoctorDto;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateDoctorCommand;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditDoctorCommand;
-import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
-import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
@@ -18,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +39,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void getAllDoctors_DoctorsExists_DoctorsReturned() {
+    void getAllDoctors_DoctorsExist_DoctorsReturned() {
         List<Institution> institutions = new ArrayList<>();
         Institution institution = new Institution();
         institutions.add(institution);
@@ -128,6 +125,8 @@ public class DoctorServiceTest {
                         .password("Agolota123")
                         .build())
                 .build();
+
+        when(doctorRepository.findById(doctor.getId())).thenReturn(Optional.empty());
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> doctorService.getDoctor(doctor.getId()));
 

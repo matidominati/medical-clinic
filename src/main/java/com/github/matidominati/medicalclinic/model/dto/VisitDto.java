@@ -13,7 +13,6 @@ public class VisitDto {
     private String institutionName;
     private String institutionAddress;
     private Long doctorId;
-    private LocalDateTime date;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private VisitType status;

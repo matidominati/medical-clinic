@@ -15,8 +15,8 @@ import java.util.List;
 public class VisitController {
     private final VisitService visitService;
 
-    @PatchMapping("/create/institution/{institutionId}")
-    public VisitDto createVisit(@PathVariable Long institutionId, @RequestBody CreateVisitCommand createVisit) {
+    @PostMapping("/create")
+    public VisitDto createVisit(@RequestParam Long institutionId, @RequestBody CreateVisitCommand createVisit) {
         return visitService.createVisit(createVisit, createVisit.getDoctorId(), institutionId);
     }
 
@@ -25,8 +25,8 @@ public class VisitController {
         return visitService.bookVisit(bookVisitCommand.getPatientId(), bookVisitCommand.getVisitId());
     }
 
-    @GetMapping("/patients/{patientId}")
-    public List<VisitDto> getAllVisits(@PathVariable Long patientId) {
+    @GetMapping()
+    public List<VisitDto> getAllVisits(@RequestParam Long patientId) {
         return visitService.getAllPatientVisits(patientId);
     }
 }

@@ -22,12 +22,24 @@ public class Institution {
     private String address;
     @ManyToMany(mappedBy = "institutions")
     private List<Doctor> doctors;
+
     public static Institution create(CreateInstitutionCommand createInstitution) {
         return Institution.builder()
                 .name(createInstitution.getName())
                 .address(createInstitution.getAddress())
+                .doctors(createInstitution.getDoctors())
                 .build();
     }
+
+    public static Institution createInstitutionWithParameters(Long id, String name, String address, List<Doctor> doctors) {
+        return Institution.builder()
+                .id(1L)
+                .name(name)
+                .address(address)
+                .doctors(doctors)
+                .build();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,6 +47,7 @@ public class Institution {
         Institution that = (Institution) o;
         return id != null && Objects.equals(id, that.id);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash();

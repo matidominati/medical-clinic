@@ -16,10 +16,10 @@ import java.util.Optional;
 @Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CRUDDataValidator {
-    public static <T> T findByIdOrThrow(Long id, JpaRepository<T, Long> jpaRepository, String entityName) {
+    public static <T> T findByIdOrThrow(Long id, JpaRepository<T, Long> jpaRepository, Class<T> entityName) {
         Optional<T> entity = jpaRepository.findById(id);
         if (entity.isEmpty()) {
-            throw new DataNotFoundException(entityName + " with the provided ID does not exist in the database");
+            throw new DataNotFoundException(entityName.getSimpleName() + " with the provided ID does not exist in the database");
         }
         return entity.get();
     }

@@ -13,7 +13,6 @@ import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.InstitutionRepository;
 import com.github.matidominati.medicalclinic.repository.PatientRepository;
 import com.github.matidominati.medicalclinic.repository.VisitRepository;
-import com.github.matidominati.medicalclinic.service.validator.VisitDataValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.github.matidominati.medicalclinic.service.validator.CRUDDataValidator.findByIdOrThrow;
+import static com.github.matidominati.medicalclinic.service.validator.VisitDataValidator.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,21 +38,21 @@ public class VisitService {
                 .collect(Collectors.toList());
     }
 
-    public VisitDto getVisitsById(Long visitId) {
-        Visit visit = findByIdOrThrow(visitId, visitRepository, "Visit");
+    public VisitDto getVisitById(Long visitId) {
+        Visit visit = findByIdOrThrow(visitId, visitRepository, Visit.class);
         return visitMapper.visitToVisitDto(visit);
     }
 
     @Transactional
     public VisitDto createVisit(CreateVisitCommand createVisit, Long doctorId, Long institutionId) {
-        Doctor doctor = findByIdOrThrow(doctorId, doctorRepository, "Doctor");
-        Institution institution = findByIdOrThrow(institutionId, institutionRepository, "Institution");
+        Doctor doctor = findByIdOrThrow(doctorId, doctorRepository, Doctor.class);
+        Institution institution = findByIdOrThrow(institutionId, institutionRepository, Institution.class);
         if (!doctor.getInstitutions().contains(institution)){
             throw new DataNotFoundException("Doctor with the provided ID does not cooperate with this institution");
         }
-        VisitDataValidator.checkIfDoctorCanCreateVisit(doctor, createVisit);
-        VisitDataValidator.checkIfVisitTimeIsCorrect(createVisit.getStartDateTime(), createVisit.getEndDateTime());
-        Visit visit = Visit.create(createVisit);
+        checkIfDoctorCanCreateVisit(doctor, createVisit);
+        checkIfVisitTimeIsCorrect(createVisit.getStartDateTime(), createVisit.getEndDateTime());
+        Visit visit = Visit.createVisit(createVisit);
         visit.setDoctor(doctor);
         visit.setInstitution(institution);
         visitRepository.save(visit);
@@ -61,9 +61,9 @@ public class VisitService {
 
     @Transactional
     public VisitDto bookVisit(Long patientId, Long visitId) {
-        Patient patientToBookVisit = findByIdOrThrow(patientId, patientRepository, "Patient");
-        Visit visitToBook = VisitDataValidator.checkIfVisitIsAvailable(visitId, visitRepository);
-        VisitDataValidator.checkIfPatientCanBookVisit(visitToBook, patientToBookVisit);
+        Patient patientToBookVisit = findByIdOrThrow(patientId, patientRepository, Patient.class);
+        Visit visitToBook = checkIfVisitIsAvailable(visitId, visitRepository);
+        checkIfPatientCanBookVisit(visitToBook, patientToBookVisit);
         patientToBookVisit.getVisits().add(visitToBook);
         visitToBook.setStatus(VisitType.SCHEDULED);
         visitToBook.setPatient(patientToBookVisit);
@@ -73,7 +73,7 @@ public class VisitService {
     }
 
     public List<VisitDto> getAllPatientVisits(Long patientId) {
-        Patient patient = findByIdOrThrow(patientId, patientRepository, "Patient");
+        Patient patient = findByIdOrThrow(patientId, patientRepository, Patient.class);
         return patient.getVisits().stream()
                 .map(visitMapper::visitToVisitDto)
                 .collect(Collectors.toList());

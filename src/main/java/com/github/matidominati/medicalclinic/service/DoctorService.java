@@ -30,7 +30,7 @@ public class DoctorService {
     }
 
     public DoctorDto getDoctor(Long id) {
-        Doctor doctor = findByIdOrThrow(id, doctorRepository, "Doctor");
+        Doctor doctor = findByIdOrThrow(id, doctorRepository, Doctor.class);
         return doctorMapper.doctorToDoctorDto(doctor);
     }
 
@@ -46,13 +46,13 @@ public class DoctorService {
 
     @Transactional
     public void deleteDoctor(Long id) {
-        Doctor doctorToDelete = findByIdOrThrow(id, doctorRepository, "Doctor");
+        Doctor doctorToDelete = findByIdOrThrow(id, doctorRepository, Doctor.class);
         doctorRepository.delete(doctorToDelete);
     }
 
     @Transactional
     public DoctorDto updateDoctor(Long id, EditDoctorCommand updatedDoctor) {
-        Doctor doctor = findByIdOrThrow(id, doctorRepository, "Doctor");
+        Doctor doctor = findByIdOrThrow(id, doctorRepository, Doctor.class);
         checkDoctorDataToUpdate(updatedDoctor.getEmail(), updatedDoctor.getPassword(), updatedDoctor.getFirstName(),
                 updatedDoctor.getLastName(), updatedDoctor.getPhoneNumber(), doctor);
         doctorRepository.save(doctor);

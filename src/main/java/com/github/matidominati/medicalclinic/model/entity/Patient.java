@@ -57,6 +57,18 @@ public class Patient {
                 .build();
     }
 
+    public static Patient createPatientWithParameters(Long id, String firstName, String lastName, String phoneNumber,
+                                                      String idCardNo, LocalDate birthDate) {
+        return Patient.builder()
+                .id(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .phoneNumber(phoneNumber)
+                .idCardNo(idCardNo)
+                .birthDate(birthDate)
+                .build();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -9,6 +9,7 @@ import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.InstitutionRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class InstitutionService {
     }
 
     public InstitutionDto getInstitutionById(Long id) {
-        Institution institution = findByIdOrThrow(id, institutionRepository, "Institution");
+        Institution institution = findByIdOrThrow(id, institutionRepository, Institution.class);
         return institutionMapper.institutionToInstitutionDto(institution);
     }
 
@@ -44,13 +45,13 @@ public class InstitutionService {
 
     @Transactional
     public void deleteInstitution(Long id) {
-        Institution institutionToDelete = findByIdOrThrow(id, institutionRepository, "Institution");
+        Institution institutionToDelete = findByIdOrThrow(id, institutionRepository, Institution.class);
         institutionRepository.delete(institutionToDelete);
     }
 
     @Transactional
     public InstitutionDto updateInstitution(Long id, EditInstitutionCommand updatedInstitution) {
-        Institution institution = findByIdOrThrow(id, institutionRepository, "Institution");
+        Institution institution = findByIdOrThrow(id, institutionRepository, Institution.class);
         institutionRepository.save(institution);
         institution.setName(updatedInstitution.getName());
         institution.setAddress(updatedInstitution.getAddress());
@@ -60,8 +61,8 @@ public class InstitutionService {
 
     @Transactional
     public InstitutionDto addDoctor(Long doctorId, Long institutionId) {
-        Doctor doctorToAdd = findByIdOrThrow(doctorId, doctorRepository, "Doctor");
-        Institution institution = findByIdOrThrow(institutionId, institutionRepository, "Institution");
+        Doctor doctorToAdd = findByIdOrThrow(doctorId, doctorRepository, Doctor.class);
+        Institution institution = findByIdOrThrow(institutionId, institutionRepository, Institution.class);
         doctorToAdd.getInstitutions().add(institution);
         doctorRepository.save(doctorToAdd);
         institutionRepository.saveAndFlush(institution);

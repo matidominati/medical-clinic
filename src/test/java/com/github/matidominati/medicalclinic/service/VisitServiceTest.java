@@ -68,7 +68,6 @@ public class VisitServiceTest {
 
         Visit visitA = Visit.builder()
                 .id(1L)
-                .date(LocalDateTime.of(2023, 12, 12, 14, 15))
                 .endDateTime(LocalDateTime.of(2023, 12, 12, 14, 45))
                 .price(BigDecimal.valueOf(100.00))
                 .status(VisitType.CREATED)
@@ -78,7 +77,6 @@ public class VisitServiceTest {
 
         Visit visitB = Visit.builder()
                 .id(2L)
-                .date(LocalDateTime.of(2023, 12, 12, 16, 15))
                 .endDateTime(LocalDateTime.of(2023, 12, 12, 17, 15))
                 .price(BigDecimal.valueOf(150.00))
                 .status(VisitType.CREATED)
@@ -122,7 +120,6 @@ public class VisitServiceTest {
 
         Visit visitA = Visit.builder()
                 .id(1L)
-                .date(LocalDateTime.of(2023, 12, 12, 14, 15))
                 .endDateTime(LocalDateTime.of(2023, 12, 12, 14, 45))
                 .price(BigDecimal.valueOf(100.00))
                 .status(VisitType.CREATED)
@@ -133,7 +130,7 @@ public class VisitServiceTest {
         when(visitRepository.findById(visitA.getId())).thenReturn(Optional.of(visitA));
 
         VisitDto visitDto = visitMapper.visitToVisitDto(visitA);
-        VisitDto result = visitService.getVisitsById(visitA.getId());
+        VisitDto result = visitService.getVisitById(visitA.getId());
 
         assertEquals(visitDto.getStartDateTime(), result.getStartDateTime());
         assertEquals(visitDto.getDoctorId(), result.getDoctorId());
@@ -171,7 +168,7 @@ public class VisitServiceTest {
 
         when(visitRepository.findById(visitA.getId())).thenReturn(Optional.empty());
 
-        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> visitService.getVisitsById(visitA.getId()));
+        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> visitService.getVisitById(visitA.getId()));
 
         assertEquals("Visit with the provided ID does not exist in the database", exception.getMessage());
     }

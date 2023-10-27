@@ -31,7 +31,7 @@ public class PatientService {
     }
 
     public PatientDto getPatient(Long id) {
-        Patient patient = findByIdOrThrow(id, patientRepository, "Patient");
+        Patient patient = findByIdOrThrow(id, patientRepository, Patient.class);
         return patientMapper.patientToPatientDto(patient);
     }
 
@@ -48,13 +48,13 @@ public class PatientService {
 
     @Transactional
     public void deletePatient(Long id) {
-        Patient patientToDelete = findByIdOrThrow(id, patientRepository, "Patient");
+        Patient patientToDelete = findByIdOrThrow(id, patientRepository, Patient.class);
         patientRepository.delete(patientToDelete);
     }
 
     @Transactional
     public PatientDto updatePatient(Long id, EditPatientCommand updatedPatient) {
-        Patient patient = findByIdOrThrow(id, patientRepository, "Patient");
+        Patient patient = findByIdOrThrow(id, patientRepository, Patient.class);
         checkPatientDataToUpdate(updatedPatient.getEmail(), updatedPatient.getPassword(), updatedPatient.getFirstName(),
                 updatedPatient.getLastName(), updatedPatient.getPhoneNumber(), patient);
         patientRepository.save(patient);
@@ -64,7 +64,7 @@ public class PatientService {
 
     @Transactional
     public PatientDto changePassword(Long id, EditPatientCommand updatedPatient) {
-        Patient patientToChangePassword = findByIdOrThrow(id, patientRepository, "Patient");
+        Patient patientToChangePassword = findByIdOrThrow(id, patientRepository, Patient.class);
         if (patientToChangePassword.getUser().getPassword().equals(updatedPatient.getPassword())) {
             throw new IncorrectPasswordException("New password cannot be the same as the old password");
         }

@@ -19,7 +19,6 @@ public class CreateVisitCommand {
     private BigDecimal price;
     private Long doctorId;
     private Institution institution;
-    private LocalDateTime date;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class DoctorDto {
+    private Long id;
     private String firstName;
     private String lastName;
     private String specialization;

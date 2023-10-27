@@ -10,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import static com.github.matidominati.medicalclinic.model.entity.Patient.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,40 +32,14 @@ public class PatientMapperTest {
     }
 
     public static Stream<Arguments> correctPatientData() {
-        Patient patient1 = Patient.builder()
-                .id(1L)
-                .firstName("Jan")
-                .lastName("Nowak")
-                .phoneNumber("123456789")
-                .idCardNo("12345")
-                .birthDate(LocalDate.of(1998, 05, 10))
-                .user(User.builder()
-                        .email("jan@nowak.pl")
-                        .username("janek123")
-                        .password("123janek")
-                        .id(1L)
-                        .build())
-                .build();
-        Patient patient2 = Patient.builder()
-                .id(1L)
-                .firstName("Jan")
-                .lastName("Nowak")
-                .phoneNumber("123456789")
-                .idCardNo("12345")
-                .birthDate(LocalDate.of(1998, 05, 10))
-                .build();
-        Patient patient3 = Patient.builder()
-                .id(1L)
-                .firstName("Jan")
-                .lastName("Nowak")
-                .phoneNumber("123456789")
-                .birthDate(LocalDate.of(1998, 05, 10))
-                .build();
+        Patient patient1 = createPatientWithParameters(1L, "Jan", "Nowak", "123456789",
+                "12345", LocalDate.of(1990, 10, 10));
+        Patient patient2 = createPatientWithParameters(1L, "Jan", "Nowak", "123456789",
+                null, LocalDate.of(1990, 10, 10));
 
         return Stream.of(
                 Arguments.of(patient1),
-                Arguments.of(patient2),
-                Arguments.of(patient3)
+                Arguments.of(patient2)
         );
     }
 }

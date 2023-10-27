@@ -22,7 +22,6 @@ public class Visit {
     @Enumerated(EnumType.STRING)
     private VisitType status;
     private BigDecimal price;
-    private LocalDateTime date;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
@@ -38,13 +37,26 @@ public class Visit {
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
-    public static Visit create(CreateVisitCommand createVisit) {
+    public static Visit createVisit(CreateVisitCommand createVisit) {
         return Visit.builder()
                 .status(createVisit.getStatus())
-                .date(createVisit.getDate())
                 .startDateTime(createVisit.getStartDateTime())
                 .endDateTime(createVisit.getEndDateTime())
                 .price(createVisit.getPrice())
+                .build();
+    }
+
+    public static Visit createVisitWithParameters(Long id, VisitType status, BigDecimal price, LocalDateTime startDateTime,
+                                                  LocalDateTime endDateTime, Doctor doctor, Patient patient, Institution institution) {
+        return Visit.builder()
+                .id(id)
+                .status(VisitType.CREATED)
+                .price(price)
+                .startDateTime(startDateTime)
+                .endDateTime(endDateTime)
+                .doctor(doctor)
+                .patient(patient)
+                .institution(institution)
                 .build();
     }
 
