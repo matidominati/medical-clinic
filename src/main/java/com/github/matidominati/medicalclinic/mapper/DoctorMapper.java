@@ -8,5 +8,4 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DoctorMapper {
     DoctorDto doctorToDoctorDto(Doctor doctor);
-
 }

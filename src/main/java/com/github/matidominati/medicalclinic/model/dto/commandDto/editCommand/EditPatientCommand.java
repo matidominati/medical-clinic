@@ -1,4 +1,4 @@
-package com.github.matidominati.medicalclinic.model.dto;
+package com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,5 +13,4 @@ public class EditPatientCommand {
     private String phoneNumber;
     private String email;
     private String password;
-
 }

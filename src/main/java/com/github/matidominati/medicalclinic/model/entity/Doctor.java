@@ -1,16 +1,16 @@
 package com.github.matidominati.medicalclinic.model.entity;
 
-import com.github.matidominati.medicalclinic.model.dto.CreateDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateDoctorCommand;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -37,12 +37,14 @@ public class Doctor {
             )
     private List<Institution> institutions;
 
+    @OneToMany(mappedBy = "doctor")
+    private List<Visit> visits;
+
     public static Doctor create(CreateDoctorCommand doctorCommand) {
         return Doctor.builder()
                 .firstName(doctorCommand.getFirstName())
                 .lastName(doctorCommand.getLastName())
                 .specialization(doctorCommand.getSpecialization())
-                .institutions(doctorCommand.getInstitutions())
                 .phoneNumber(doctorCommand.getPhoneNumber())
                 .user(User.builder()
                         .email(doctorCommand.getEmail())
@@ -50,6 +52,30 @@ public class Doctor {
                         .password(doctorCommand.getPassword())
                         .build())
                 .build();
+    }
 
+    public static Doctor createDoctorWithParameters(Long id, String firstName, String lastName, String specialization,
+                                                    String phoneNumber, List<Institution> institutions) {
+        return Doctor.builder()
+                .id(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .specialization(specialization)
+                .phoneNumber(phoneNumber)
+                .institutions(new ArrayList<>())
+                .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return id != null && Objects.equals(id, doctor.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash();
     }
 }

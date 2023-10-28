@@ -1,15 +1,28 @@
-package com.github.matidominati.medicalclinic.service;
+package com.github.matidominati.medicalclinic.service.validator;
 
 import com.github.matidominati.medicalclinic.exception.*;
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
 import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-
-public class DataValidator {
+@Component
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class CRUDDataValidator {
+    public static <T> T findByIdOrThrow(Long id, JpaRepository<T, Long> jpaRepository, Class<T> entityName) {
+        Optional<T> entity = jpaRepository.findById(id);
+        if (entity.isEmpty()) {
+            throw new DataNotFoundException(entityName.getSimpleName() + " with the provided ID does not exist in the database");
+        }
+        return entity.get();
+    }
 
     public static boolean isPasswordValid(String password, String firstName, String lastName) {
         if (password == null || password.isEmpty()) {
@@ -61,7 +74,7 @@ public class DataValidator {
         }
     }
 
-    public static void checkIfDataNotExists(String email, String username, UserRepository userRepository) {
+    public static void checkIfDataDoesNotExists(String email, String username, UserRepository userRepository) {
         Optional<User> optionalUserEmail = userRepository.findByEmail(email);
         if (optionalUserEmail.isPresent()) {
             throw new DataAlreadyExistsException("User with given email exists");

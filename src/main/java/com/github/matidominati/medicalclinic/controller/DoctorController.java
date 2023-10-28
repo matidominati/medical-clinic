@@ -1,8 +1,8 @@
 package com.github.matidominati.medicalclinic.controller;
 
-import com.github.matidominati.medicalclinic.model.dto.CreateDoctorCommand;
 import com.github.matidominati.medicalclinic.model.dto.DoctorDto;
-import com.github.matidominati.medicalclinic.model.dto.EditDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateDoctorCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditDoctorCommand;
 import com.github.matidominati.medicalclinic.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +40,4 @@ public class DoctorController {
     public DoctorDto updateDoctor(@PathVariable Long id, @RequestBody EditDoctorCommand updatedDoctor) {
         return doctorService.updateDoctor(id, updatedDoctor);
     }
-
 }

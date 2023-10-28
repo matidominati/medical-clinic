@@ -1,11 +1,14 @@
 package com.github.matidominati.medicalclinic.controller;
 
-import com.github.matidominati.medicalclinic.model.dto.CreatePatientCommand;
-import com.github.matidominati.medicalclinic.model.dto.EditPatientCommand;
 import com.github.matidominati.medicalclinic.model.dto.PatientDto;
+import com.github.matidominati.medicalclinic.model.dto.VisitDto;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreatePatientCommand;
+import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditPatientCommand;
 import com.github.matidominati.medicalclinic.service.PatientService;
+import com.github.matidominati.medicalclinic.service.VisitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,6 +17,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final VisitService visitService;
 
     @GetMapping
     public List<PatientDto> getAllPatients() {
@@ -37,7 +41,7 @@ public class PatientController {
 
     @PutMapping("/{id}")
     public PatientDto updatePatient(@PathVariable Long id, @RequestBody EditPatientCommand updatedPatient) {
-       return patientService.updatePatient(id, updatedPatient);
+        return patientService.updatePatient(id, updatedPatient);
     }
 
     @PatchMapping("/{id}")
