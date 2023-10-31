@@ -9,7 +9,6 @@ import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.InstitutionRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class InstitutionService {
 
     @Transactional
     public InstitutionDto addInstitution(CreateInstitutionCommand createInstitution) {
-        Institution institution = Institution.create(createInstitution);
+        Institution institution = Institution.createInstitution(createInstitution);
         institutionRepository.save(institution);
         return institutionMapper.institutionToInstitutionDto(institution);
     }

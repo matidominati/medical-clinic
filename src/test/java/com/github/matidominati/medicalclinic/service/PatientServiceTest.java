@@ -150,7 +150,7 @@ public class PatientServiceTest {
 
         when(userRepository.findByEmail(patientCommand.getEmail())).thenReturn(Optional.empty());
 
-        Patient createdPatient = Patient.create(patientCommand);
+        Patient createdPatient = Patient.createPatient(patientCommand);
 
         PatientDto result = patientService.addPatient(patientCommand);
 

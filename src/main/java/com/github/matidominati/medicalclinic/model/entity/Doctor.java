@@ -4,7 +4,6 @@ import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +39,7 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor")
     private List<Visit> visits;
 
-    public static Doctor create(CreateDoctorCommand doctorCommand) {
+    public static Doctor createDoctor(CreateDoctorCommand doctorCommand) {
         return Doctor.builder()
                 .firstName(doctorCommand.getFirstName())
                 .lastName(doctorCommand.getLastName())
@@ -51,18 +50,6 @@ public class Doctor {
                         .username(doctorCommand.getUsername())
                         .password(doctorCommand.getPassword())
                         .build())
-                .build();
-    }
-
-    public static Doctor createDoctorWithParameters(Long id, String firstName, String lastName, String specialization,
-                                                    String phoneNumber, List<Institution> institutions) {
-        return Doctor.builder()
-                .id(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .specialization(specialization)
-                .phoneNumber(phoneNumber)
-                .institutions(new ArrayList<>())
                 .build();
     }
 

@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: PATIENT
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_patient_id
+                  name: id
+                  type: Long
+              - column:
+                  name: id_card_no
+                  type: varchar(20)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(9)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: birthdate
+                  type: DATE
+                  constraints:
+                    nullable: false

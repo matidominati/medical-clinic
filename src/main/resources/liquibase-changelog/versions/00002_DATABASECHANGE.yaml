@@ -1,0 +1,151 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: USERS
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: Long
+              - column:
+                  name: email
+                  type: varchar(40)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: unique_patient_email
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(15)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: PATIENT
+            columns:
+              - column:
+                  name: user_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_patient_user
+                    references: users(id)
+                    unique: true
+  - changeSet:
+      id: 3
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: DOCTOR
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: Long
+              - column:
+                  name: first_name
+                  type: varchar(20)
+              - column:
+                  name: last_name
+                  type: varchar(25)
+              - column:
+                  name: specialization
+                  type: varchar(30)
+              - column:
+                  name: phone_number
+                  type: varchar(9)
+              - column:
+                  name: user_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_doctor_user
+                    references: users(id)
+                    unique: true
+  - changeSet:
+      id: 4
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: INSTITUTION
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: Long
+              - column:
+                  name: name
+                  type: varchar(50)
+              - column:
+                  name: address
+                  type: varchar(50)
+  - changeSet:
+      id: 5
+      author: Mateusz
+      changes:
+        - createTable:
+            tableName: VISIT
+            columns:
+              - column:
+                  name: id
+                  type: Long
+                autoIncrement: true
+                constraints:
+                  nullable: false
+                  primaryKey: true
+              - column:
+                  name: status
+                  type: varchar(20)
+              - column:
+                  name: price
+                  type: DECIMAL(5,2)
+              - column:
+                  name: start_date_time
+                  type: TIMESTAMP
+              - column:
+                  name: end_date_time
+                  type: TIMESTAMP
+              - column:
+                  name: doctor_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_visit_doctor
+                    references: doctor(id)
+              - column:
+                  name: patient_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_visit_patient
+                    references: patient(id)
+              - column:
+                  name: institution_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_visit_institution
+                    references: institution(id)
+
+
+
+
+
+
+
+
+
+
+

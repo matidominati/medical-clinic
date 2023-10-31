@@ -40,7 +40,7 @@ public class PatientService {
         checkData(createPatient.getFirstName(), createPatient.getLastName(), createPatient.getPhoneNumber(),
                 createPatient.getPassword(), createPatient.getEmail());
         checkIfDataDoesNotExists(createPatient.getEmail(), createPatient.getUsername(), userRepository);
-        Patient patient = Patient.create(createPatient);
+        Patient patient = Patient.createPatient(createPatient);
         patientRepository.save(patient);
         userRepository.save(patient.getUser());
         return patientMapper.patientToPatientDto(patient);
