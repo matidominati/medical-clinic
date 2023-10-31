@@ -37,7 +37,7 @@ public final class VisitDataValidator {
                         patientVisit.getEndDateTime().isAfter(visit.getStartDateTime()
                         ));
         if (haveVisit) {
-            throw new DataNotFoundException("Patient has already booked an appointment for this date");
+            throw new DataAlreadyExistsException("Patient has already booked an appointment for this date");
         }
     }
 
@@ -56,7 +56,7 @@ public final class VisitDataValidator {
                                 existingVisit.getEndDateTime().isAfter(newVisit.getStartDateTime())
                 );
         if (isOverlap) {
-            throw new DataNotFoundException("The date of the visit coincides with the existing visit");
+            throw new IncorrectDateException("The date of the visit coincides with the existing visit");
         }
     }
 }

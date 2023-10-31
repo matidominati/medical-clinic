@@ -1,7 +1,7 @@
 package com.github.matidominati.medicalclinic.mapper;
 
+import com.github.matidominati.medicalclinic.dataFactory.TestDataFactory;
 import com.github.matidominati.medicalclinic.model.entity.Patient;
-import com.github.matidominati.medicalclinic.model.entity.User;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static com.github.matidominati.medicalclinic.model.entity.Patient.*;
+import static com.github.matidominati.medicalclinic.dataFactory.TestDataFactory.createPatient;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,9 +32,9 @@ public class PatientMapperTest {
     }
 
     public static Stream<Arguments> correctPatientData() {
-        Patient patient1 = createPatientWithParameters(1L, "Jan", "Nowak", "123456789",
+        Patient patient1 = createPatient(1L, "Jan", "Nowak", "123456789",
                 "12345", LocalDate.of(1990, 10, 10));
-        Patient patient2 = createPatientWithParameters(1L, "Jan", "Nowak", "123456789",
+        Patient patient2 = createPatient(1L, "Jan", "Nowak", "123456789",
                 null, LocalDate.of(1990, 10, 10));
 
         return Stream.of(

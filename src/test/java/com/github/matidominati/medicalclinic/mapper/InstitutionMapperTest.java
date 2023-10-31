@@ -1,8 +1,8 @@
 package com.github.matidominati.medicalclinic.mapper;
 
+import com.github.matidominati.medicalclinic.dataFactory.TestDataFactory;
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.github.matidominati.medicalclinic.dataFactory.TestDataFactory.*;
+import static com.github.matidominati.medicalclinic.mapper.DoctorMapperTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InstitutionMapperTest {
@@ -34,12 +36,12 @@ public class InstitutionMapperTest {
     }
 
     public static Stream<Arguments> institutionData() {
-        Doctor doctor1 = Doctor.createDoctorWithParameters(1L, "Andrzej", "Golota", "onkolog",
+        Doctor doctor1 = createDoctor(1L, "Andrzej", "Golota", "onkolog",
                 "123456789", null);
-        Doctor doctor2 = Doctor.createDoctorWithParameters(2L, "Jan", "Golota", "onkolog",
+        Doctor doctor2 = createDoctor(2L, "Jan", "Golota", "onkolog",
                 "123456789", null);
-        Institution institution1 = Institution.createInstitutionWithParameters(1L, "NFZ", "Warszawa", List.of(doctor1,doctor2));
-        Institution institution2 = Institution.createInstitutionWithParameters(1L, "NFZ", "Gdansk", List.of(doctor2));
+        Institution institution1 = createInstitution(1L, "NFZ", "Warszawa", List.of(doctor1,doctor2));
+        Institution institution2 = createInstitution(1L, "NFZ", "Gdansk", List.of(doctor2));
 
         return Stream.of(
                 Arguments.of(institution1),

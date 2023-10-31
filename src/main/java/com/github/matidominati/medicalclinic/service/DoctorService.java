@@ -39,7 +39,7 @@ public class DoctorService {
         checkData(createDoctor.getFirstName(), createDoctor.getLastName(),
                 createDoctor.getPhoneNumber(), createDoctor.getPassword(), createDoctor.getEmail());
         checkIfDataDoesNotExists(createDoctor.getEmail(), createDoctor.getUsername(), userRepository);
-        Doctor doctor = Doctor.create(createDoctor);
+        Doctor doctor = Doctor.createDoctor(createDoctor);
         doctorRepository.save(doctor);
         return doctorMapper.doctorToDoctorDto(doctor);
     }

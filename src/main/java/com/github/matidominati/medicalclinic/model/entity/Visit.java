@@ -46,20 +46,6 @@ public class Visit {
                 .build();
     }
 
-    public static Visit createVisitWithParameters(Long id, VisitType status, BigDecimal price, LocalDateTime startDateTime,
-                                                  LocalDateTime endDateTime, Doctor doctor, Patient patient, Institution institution) {
-        return Visit.builder()
-                .id(id)
-                .status(VisitType.CREATED)
-                .price(price)
-                .startDateTime(startDateTime)
-                .endDateTime(endDateTime)
-                .doctor(doctor)
-                .patient(patient)
-                .institution(institution)
-                .build();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

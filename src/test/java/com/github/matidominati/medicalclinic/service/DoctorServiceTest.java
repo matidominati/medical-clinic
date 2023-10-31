@@ -4,6 +4,7 @@ import com.github.matidominati.medicalclinic.exception.DataAlreadyExistsExceptio
 import com.github.matidominati.medicalclinic.exception.DataNotFoundException;
 import com.github.matidominati.medicalclinic.mapper.DoctorMapper;
 import com.github.matidominati.medicalclinic.model.dto.DoctorDto;
+import com.github.matidominati.medicalclinic.model.dto.InstitutionDto;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.CreateDoctorCommand;
 import com.github.matidominati.medicalclinic.model.dto.commandDto.editCommand.EditDoctorCommand;
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
@@ -11,6 +12,7 @@ import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.model.entity.User;
 import com.github.matidominati.medicalclinic.repository.DoctorRepository;
 import com.github.matidominati.medicalclinic.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -134,6 +136,7 @@ public class DoctorServiceTest {
     }
 
     @Test
+    @Transactional
     void addDoctor_DoctorDataCorrect_DoctorReturned() {
         CreateDoctorCommand createDoctor = new CreateDoctorCommand();
         createDoctor.setFirstName("Andrzej");
@@ -147,7 +150,7 @@ public class DoctorServiceTest {
 
         when(userRepository.findByEmail(createDoctor.getEmail())).thenReturn(Optional.empty());
 
-        Doctor createdDoctor = Doctor.create(createDoctor);
+        Doctor createdDoctor = Doctor.createDoctor(createDoctor);
 
         DoctorDto result = doctorService.addDoctor(createDoctor);
 
@@ -173,7 +176,7 @@ public class DoctorServiceTest {
 
         DataAlreadyExistsException exception = assertThrows(DataAlreadyExistsException.class,
                 () -> doctorService.addDoctor(createDoctor));
-        assertEquals("User with given email exist", exception.getMessage());
+        assertEquals("User with given email exists", exception.getMessage());
     }
 
     @Test

@@ -7,7 +7,6 @@ import com.github.matidominati.medicalclinic.model.dto.commandDto.createCommand.
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
 import com.github.matidominati.medicalclinic.repository.InstitutionRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -16,10 +15,11 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static com.github.matidominati.medicalclinic.dataFactory.TestDataFactory.createDoctor;
+import static com.github.matidominati.medicalclinic.dataFactory.TestDataFactory.createInstitution;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class InstitutionServiceTest {
@@ -36,8 +36,8 @@ public class InstitutionServiceTest {
 
     @Test
     void getAllInstitutions_InstitutionsExist_InstitutionsReturned() {
-        Institution institution1 = Institution.createInstitutionWithParameters(1L, "NFZ", "Warszawa", null);
-        Institution institution2 = Institution.createInstitutionWithParameters(2L, "NFZ", "Gdansk", null);
+        Institution institution1 = createInstitution(1L, "NFZ", "Warszawa", null);
+        Institution institution2 = createInstitution(2L, "NFZ", "Gdansk", null);
         List<Institution> institutions = List.of(institution1, institution2);
 
         when(institutionRepository.findAll()).thenReturn(institutions);
@@ -53,7 +53,7 @@ public class InstitutionServiceTest {
 
     @Test
     void getInstitutionById_IdCorrect_InstitutionReturned() {
-        Institution institution = Institution.createInstitutionWithParameters(1L, "NFZ", "Warszawa", null);
+        Institution institution = createInstitution(1L, "NFZ", "Warszawa", null);
 
         when(institutionRepository.findById(institution.getId())).thenReturn(Optional.of(institution));
 
@@ -67,7 +67,7 @@ public class InstitutionServiceTest {
 
     @Test
     void getInstitutionById_IdNotFound_InstitutionReturned() {
-        Institution institution = Institution.createInstitutionWithParameters(1L, "NFZ", "Warszawa", null);
+        Institution institution = createInstitution(1L, "NFZ", "Warszawa", null);
 
         when(institutionRepository.findById(institution.getId())).thenReturn(Optional.empty());
 
@@ -78,9 +78,9 @@ public class InstitutionServiceTest {
 
     @Test
     void addInstitution_InstitutionDataCorrect_InstitutionReturned() {
-        Doctor doctor1 = Doctor.createDoctorWithParameters(1L, "Andrzej", "Golota", "chirurg",
+        Doctor doctor1 = createDoctor(1L, "Andrzej", "Golota", "chirurg",
                 "123456789", null);
-        Doctor doctor2 = Doctor.createDoctorWithParameters(1L, "Andrzej", "Golota", "chirurg",
+        Doctor doctor2 = createDoctor(1L, "Andrzej", "Golota", "chirurg",
                 "123456789", null);
         CreateInstitutionCommand createInstitution = CreateInstitutionCommand.builder()
                 .id(1L)
@@ -91,7 +91,7 @@ public class InstitutionServiceTest {
 
         when(institutionRepository.findById(createInstitution.getId())).thenReturn(Optional.empty());
 
-        Institution createdInstitution = Institution.create(createInstitution);
+        Institution createdInstitution = Institution.createInstitution(createInstitution);
         InstitutionDto result = institutionService.addInstitution(createInstitution);
 
         assertEquals(createdInstitution.getId(), result.getId());
@@ -105,7 +105,7 @@ public class InstitutionServiceTest {
 
     @Test
     void addInstitution_InstitutionDataIncorrect_InstitutionNotReturned() {
-        Doctor doctor = Doctor.createDoctorWithParameters(1L, "Andrzej", "Golota", "chirurg",
+        Doctor doctor = createDoctor(1L, "Andrzej", "Golota", "chirurg",
                 "123456789", null);
         CreateInstitutionCommand createInstitution = CreateInstitutionCommand.builder()
                 .id(1L)
@@ -116,7 +116,7 @@ public class InstitutionServiceTest {
 
         when(institutionRepository.findById(createInstitution.getId())).thenReturn(Optional.empty());
 
-        Institution createdInstitution = Institution.create(createInstitution);
+        Institution createdInstitution = Institution.createInstitution(createInstitution);
         InstitutionDto result = institutionService.addInstitution(createInstitution);
 
         assertEquals(createdInstitution.getId(), result.getId());

@@ -1,20 +1,20 @@
 package com.github.matidominati.medicalclinic.mapper;
 
+import com.github.matidominati.medicalclinic.dataFactory.TestDataFactory;
 import com.github.matidominati.medicalclinic.model.entity.Doctor;
 import com.github.matidominati.medicalclinic.model.entity.Institution;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.github.matidominati.medicalclinic.model.entity.Doctor.*;
-import static com.github.matidominati.medicalclinic.model.entity.Institution.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.github.matidominati.medicalclinic.dataFactory.TestDataFactory.*;
+import static com.github.matidominati.medicalclinic.dataFactory.TestDataFactory.createDoctor;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DoctorMapperTest {
     DoctorMapper doctorMapper = Mappers.getMapper(DoctorMapper.class);
@@ -34,11 +34,11 @@ public class DoctorMapperTest {
     }
 
     public static Stream<Arguments> doctorData() {
-        Institution institution1 = createInstitutionWithParameters(1L, "NFZ", "Warszawa", null);
-        Institution institution2 = createInstitutionWithParameters(1L, null, null, null);
-        Doctor doctor1 = createDoctorWithParameters(1L, "Mariusz", "Kowalski", "chirurg",
+        Institution institution1 = createInstitution(1L, "NFZ", "Warszawa", null);
+        Institution institution2 = createInstitution(1L, null, null, null);
+        Doctor doctor1 = createDoctor(1L, "Mariusz", "Kowalski", "chirurg",
                 "123456789", List.of(institution1));
-        Doctor doctor2 = createDoctorWithParameters(1L, "Mariusz", "Kowalski", "chirurg",
+        Doctor doctor2 = createDoctor(1L, "Mariusz", "Kowalski", "chirurg",
                 null, List.of(institution2));
 
         return Stream.of(

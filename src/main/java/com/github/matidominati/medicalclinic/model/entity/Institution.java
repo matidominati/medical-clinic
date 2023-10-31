@@ -23,20 +23,11 @@ public class Institution {
     @ManyToMany(mappedBy = "institutions")
     private List<Doctor> doctors;
 
-    public static Institution create(CreateInstitutionCommand createInstitution) {
+    public static Institution createInstitution(CreateInstitutionCommand createInstitution) {
         return Institution.builder()
                 .name(createInstitution.getName())
                 .address(createInstitution.getAddress())
                 .doctors(createInstitution.getDoctors())
-                .build();
-    }
-
-    public static Institution createInstitutionWithParameters(Long id, String name, String address, List<Doctor> doctors) {
-        return Institution.builder()
-                .id(1L)
-                .name(name)
-                .address(address)
-                .doctors(doctors)
                 .build();
     }
 

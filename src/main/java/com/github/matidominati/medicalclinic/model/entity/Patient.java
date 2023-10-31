@@ -42,7 +42,7 @@ public class Patient {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    public static Patient create(CreatePatientCommand patientCommand) {
+    public static Patient createPatient(CreatePatientCommand patientCommand) {
         return Patient.builder()
                 .firstName(patientCommand.getFirstName())
                 .lastName(patientCommand.getLastName())
@@ -54,18 +54,6 @@ public class Patient {
                         .username(patientCommand.getUsername())
                         .password(patientCommand.getPassword())
                         .build())
-                .build();
-    }
-
-    public static Patient createPatientWithParameters(Long id, String firstName, String lastName, String phoneNumber,
-                                                      String idCardNo, LocalDate birthDate) {
-        return Patient.builder()
-                .id(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .phoneNumber(phoneNumber)
-                .idCardNo(idCardNo)
-                .birthDate(birthDate)
                 .build();
     }
 
