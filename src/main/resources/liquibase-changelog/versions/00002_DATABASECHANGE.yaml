@@ -138,14 +138,3 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: fk_visit_institution
                     references: institution(id)
-
-
-
-
-
-
-
-
-
-
-
