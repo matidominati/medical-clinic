@@ -151,6 +151,7 @@ public class PatientServiceTest {
         when(userRepository.findByEmail(patientCommand.getEmail())).thenReturn(Optional.empty());
 
         Patient createdPatient = Patient.createPatient(patientCommand);
+        patientRepository.save(createdPatient);
 
         PatientDto result = patientService.addPatient(patientCommand);
 
@@ -174,7 +175,7 @@ public class PatientServiceTest {
         when(userRepository.findByEmail(patientCommand.getEmail())).thenReturn(Optional.of(new User()));
 
         DataAlreadyExistsException exception = assertThrows(DataAlreadyExistsException.class, () -> patientService.addPatient(patientCommand));
-        assertEquals("User with given email exist", exception.getMessage());
+        assertEquals("User with given email exists", exception.getMessage());
     }
 
     @Test

@@ -99,21 +99,42 @@ databaseChangeLog:
       author: Mateusz
       changes:
         - createTable:
+            tableName: DOCTOR_INSTITUTION
+            columns:
+              - column:
+                  name: doctor_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_doctor_institution_doctor
+                    references: doctor(id)
+                    nullable: false
+              - column:
+                  name: institution_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_doctor_institution_institution
+                    references: institution(id)
+                    nullable: false
+  - changeSet:
+      id: 6
+      author: Mateusz
+      changes:
+        - createTable:
             tableName: VISIT
             columns:
               - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
                   name: id
                   type: Long
-                autoIncrement: true
-                constraints:
-                  nullable: false
-                  primaryKey: true
               - column:
                   name: status
                   type: varchar(20)
               - column:
                   name: price
-                  type: DECIMAL(5,2)
+                  type: DECIMAL(10,2)
               - column:
                   name: start_date_time
                   type: TIMESTAMP
