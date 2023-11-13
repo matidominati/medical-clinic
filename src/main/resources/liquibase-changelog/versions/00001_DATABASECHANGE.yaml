@@ -36,7 +36,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: birthdate
+                  name: birth_date
                   type: DATE
                   constraints:
                     nullable: false

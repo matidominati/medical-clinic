@@ -49,7 +49,7 @@ public class VisitService {
             log.info("Found visits with ID: {}", visitId);
             return visitMapper.visitToVisitDto(visit);
         } catch (DataNotFoundException e) {
-            log.warn("Visit with ID: {} not found", visitId);
+            log.info("Visit with ID: {} not found", visitId);
             throw e;
         }
     }
@@ -103,7 +103,7 @@ public class VisitService {
             log.info("{} patient visits found", patientVisits.size());
             return patientVisits;
         } catch (DataNotFoundException e) {
-            log.warn("Patient with ID: {} not found", patientId);
+            log.info("Patient with ID: {} not found", patientId);
             throw e;
         }
     }

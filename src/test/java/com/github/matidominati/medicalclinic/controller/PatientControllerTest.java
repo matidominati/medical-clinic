@@ -51,7 +51,7 @@ public class PatientControllerTest {
                 .firstName("Andrzej")
                 .lastName("Golota")
                 .idCardNo("123456")
-                .phoneNumber("123-456-789")
+                .phoneNumber("123456789")
                 .birthDate(LocalDate.of(1960, 5, 10))
                 .user(user)
                 .build();
@@ -69,7 +69,7 @@ public class PatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].firstName").value("Andrzej"))
                 .andExpect(jsonPath("$[0].lastName").value("Golota"))
-                .andExpect(jsonPath("$[0].phoneNumber").value("123-456-789"))
+                .andExpect(jsonPath("$[0].phoneNumber").value("123456789"))
                 .andExpect(jsonPath("$[0].birthDate", Matchers.is(LocalDate.parse("1960-05-10").toString())));
     }
 
@@ -80,7 +80,7 @@ public class PatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Andrzej"))
                 .andExpect(jsonPath("$.lastName").value("Golota"))
-                .andExpect(jsonPath("$.phoneNumber").value("123-456-789"))
+                .andExpect(jsonPath("$.phoneNumber").value("123456789"))
                 .andExpect(jsonPath("$.birthDate", Matchers.is(LocalDate.parse("1960-05-10").toString())));
     }
 
@@ -93,9 +93,10 @@ public class PatientControllerTest {
         createPatient.setBirthDate(LocalDate.of(1990,10,10));
         createPatient.setPassword("jnowak1123");
         createPatient.setUsername(("jnowak123"));
-        createPatient.setIdCardNo("123456");
+        createPatient.setIdCardNo("123457");
         createPatient.setEmail("jan.nowak@nowa.pl");
         createPatient.setPhoneNumber("123456789");
+
 
         MvcResult mvcResult = mockMvc.perform(post("/patients")
                         .content(objectMapper.writeValueAsString(createPatient))

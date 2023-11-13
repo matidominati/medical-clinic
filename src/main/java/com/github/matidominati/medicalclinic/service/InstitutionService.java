@@ -41,7 +41,7 @@ public class InstitutionService {
             Institution institution = findByIdOrThrow(id, institutionRepository, Institution.class);
             return institutionMapper.institutionToInstitutionDto(institution);
         } catch (DataNotFoundException e) {
-            log.warn("Institution with ID: {} not found", id);
+            log.info("Institution with ID: {} not found", id);
             throw e;
         }
     }
@@ -63,7 +63,7 @@ public class InstitutionService {
             institutionRepository.delete(institutionToDelete);
             log.info("Institution with ID: {} has been removed", id);
         } catch (DataNotFoundException e) {
-            log.warn("Institution with ID: {} not found", id);
+            log.info("Institution with ID: {} not found", id);
             throw e;
         }
     }
@@ -80,7 +80,7 @@ public class InstitutionService {
             log.debug("Institution data has been updated. {}", updatedInstitution);
             return institutionMapper.institutionToInstitutionDto(institution);
         } catch (DataNotFoundException e) {
-            log.warn("Institution with ID: {} not found", id);
+            log.info("Institution with ID: {} not found", id);
             throw e;
         }
     }

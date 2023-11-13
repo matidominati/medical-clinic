@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class VisitDto {
     private Long id;
     private BigDecimal price;
+    private Long institutionId;
     private String institutionName;
     private String institutionAddress;
     private Long doctorId;

@@ -46,7 +46,7 @@ public class PatientService {
             log.info("Found patient with ID: {}", id);
             return patientMapper.patientToPatientDto(patient);
         } catch (DataNotFoundException e) {
-            log.warn("Patient with ID: {} not found", id);
+            log.info("Patient with ID: {} not found", id);
             throw e;
         }
     }
@@ -65,10 +65,10 @@ public class PatientService {
             log.info("New patient with ID: {} has been created.", patient.getId());
             return patientMapper.patientToPatientDto(patient);
         } catch (IncorrectDataException e) {
-            log.warn("Incorrect data provided (first name, last name, phone number, password or email");
+            log.info("Incorrect data provided (first name, last name, phone number, password or email");
             throw e;
         } catch (DataAlreadyExistsException ex) {
-            log.warn("Patient with provided data already exists in the system");
+            log.info("Patient with provided data already exists in the system");
             throw ex;
         }
     }
@@ -81,7 +81,7 @@ public class PatientService {
             patientRepository.delete(patientToDelete);
             log.info("Patient with ID: {} has been removed", id);
         } catch (DataNotFoundException e) {
-            log.warn("Patient with ID: {} not found", id);
+            log.info("Patient with ID: {} not found", id);
             throw e;
         }
     }
@@ -94,10 +94,10 @@ public class PatientService {
             checkPatientDataToUpdate(updatedPatient.getEmail(), updatedPatient.getPassword(), updatedPatient.getFirstName(),
                     updatedPatient.getLastName(), updatedPatient.getPhoneNumber(), patient);
             patientRepository.save(patient);
-            log.debug("Patient data has been updated. {}", updatedPatient);
+            log.info("Patient data has been updated. {}", updatedPatient);
             return patientMapper.patientToPatientDto(patient);
         } catch (DataNotFoundException e) {
-            log.warn("Patient with ID: {} not found", id);
+            log.info("Patient with ID: {} not found", id);
             throw e;
         }
     }
@@ -116,10 +116,10 @@ public class PatientService {
             log.info("Password for the patient ID: {} has been changed", id);
             return patientMapper.patientToPatientDto(patientToChangePassword);
         } catch (DataNotFoundException e) {
-            log.warn("Patient with ID: {} not found", id);
+            log.info("Patient with ID: {} not found", id);
             throw e;
         } catch (IncorrectPasswordException ex) {
-            log.warn("Invalid new password provided");
+            log.info("Invalid new password provided");
             throw ex;
         }
     }

@@ -45,7 +45,7 @@ public class DoctorService {
             log.info("Found doctor with ID: {}", id);
             return doctorMapper.doctorToDoctorDto(doctor);
         } catch (DataNotFoundException e) {
-            log.warn("Doctor with ID: {} not found", id);
+            log.info("Doctor with ID: {} not found", id);
             throw e;
         }
     }
@@ -63,10 +63,10 @@ public class DoctorService {
             log.info("New doctor with ID: {} has been created.", doctor.getId());
             return doctorMapper.doctorToDoctorDto(doctor);
         } catch (IncorrectDataException e) {
-            log.warn("Incorrect data provided (first name, last name, phone number, password or email");
+            log.info("Incorrect data provided (first name, last name, phone number, password or email");
             throw e;
         } catch (DataAlreadyExistsException ex) {
-            log.warn("Doctor with provided data already exists in the system");
+            log.info("Doctor with provided data already exists in the system");
             throw ex;
         }
     }
@@ -79,7 +79,7 @@ public class DoctorService {
             doctorRepository.delete(doctorToDelete);
             log.info("Doctor with ID: {} has been removed.", id);
         } catch (DataNotFoundException e) {
-            log.warn("Doctor with ID: {} not found", id);
+            log.info("Doctor with ID: {} not found", id);
             throw e;
         }
     }
@@ -95,7 +95,7 @@ public class DoctorService {
             log.debug("Doctor data has been updated. {}", updatedDoctor);
             return doctorMapper.doctorToDoctorDto(doctor);
         } catch (DataNotFoundException e) {
-            log.warn("Doctor with ID: {} not found", id);
+            log.info("Doctor with ID: {} not found", id);
             throw e;
         }
     }

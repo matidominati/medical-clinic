@@ -151,6 +151,7 @@ public class DoctorServiceTest {
         when(userRepository.findByEmail(createDoctor.getEmail())).thenReturn(Optional.empty());
 
         Doctor createdDoctor = Doctor.createDoctor(createDoctor);
+        doctorRepository.save(createdDoctor);
 
         DoctorDto result = doctorService.addDoctor(createDoctor);
 
