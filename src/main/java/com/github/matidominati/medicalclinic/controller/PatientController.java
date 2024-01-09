@@ -35,6 +35,10 @@ public class PatientController {
     public List<PatientDto> getAllPatients() {
         return patientService.getAllPatients();
     }
+//
+    ///////
+    //
+    /////
 
     @Operation(summary = "Get patient by ID", tags = "Patient")
     @ApiResponses(value = {
