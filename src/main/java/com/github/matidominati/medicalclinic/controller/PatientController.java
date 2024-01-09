@@ -25,7 +25,7 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    @Operation(summary = "Get all patients", tags = "Patient")
+    @Operation(summary = "Get all patients", description = "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", tags = "Patient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -35,6 +35,10 @@ public class PatientController {
     public List<PatientDto> getAllPatients() {
         return patientService.getAllPatients();
     }
+//
+    //
+    //
+    //
 
     @Operation(summary = "Get patient by ID", tags = "Patient")
     @ApiResponses(value = {
